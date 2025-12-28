@@ -1,0 +1,37 @@
+{
+  "pages": [
+    "pages/home/home"
+  ],
+  "subpackages": [
+    {
+      "root": "subpackages/anniversary",
+      "pages": [
+        "pages/index/index",
+        "pages/edit/edit",
+        "pages/detail/detail"
+      ]
+    },
+    {
+      "root": "subpackages/timecapsule",
+      "pages": [
+        "pages/map/map",
+        "pages/record/record",
+        "pages/player/player"
+      ]
+    }
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "工具集",
+    "navigationBarTextStyle": "black"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "requiredPrivateInfos": ["getLocation"],
+  "permission": {
+    "scope.userLocation": {
+      "desc": "您的位置信息将用于查找附近的声音胶囊"
+    }
+  }
+}

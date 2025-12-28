@@ -1,0 +1,62 @@
+/* pages/home/home.wxss */
+.header {
+  padding: 40rpx 30rpx;
+}
+
+.title {
+  font-size: 48rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 10rpx;
+}
+
+.subtitle {
+  font-size: 28rpx;
+  color: #999;
+}
+
+.grid {
+  padding: 0 30rpx;
+}
+
+.tool-card {
+  display: flex;
+  align-items: center;
+  margin: 0 0 30rpx 0; /* Override app.wxss margin */
+  padding: 30rpx;
+}
+
+.icon-box {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 20rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 30rpx;
+}
+
+.icon-text {
+  font-size: 50rpx;
+  color: #fff;
+}
+
+.info {
+  flex: 1;
+}
+
+.tool-name {
+  font-size: 34rpx;
+  font-weight: bold;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.tool-desc {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.placeholder .icon-text {
+  color: #ccc;
+}

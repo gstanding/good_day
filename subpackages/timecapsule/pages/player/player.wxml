@@ -1,0 +1,40 @@
+<!--subpackages/timecapsule/pages/player/player.wxml-->
+<view class="container">
+  <view class="cassette">
+    <view class="tape-window">
+      <view class="reel left {{isPlaying ? 'spinning' : ''}}"></view>
+      <view class="reel right {{isPlaying ? 'spinning' : ''}}"></view>
+    </view>
+    <view class="label">
+      <text class="title">{{title}}</text>
+      <text class="date">{{date}}</text>
+    </view>
+  </view>
+
+  <view class="desc-area" wx:if="{{description}}">
+    <text class="desc-text">{{description}}</text>
+  </view>
+
+  <view class="progress-area">
+    <slider class="slider" 
+            min="0" max="{{duration}}" 
+            value="{{currentTime}}" 
+            activeColor="#ff4d4f" 
+            block-size="12"
+            disabled />
+    <view class="time-info">
+      <text>{{currentTimeStr}}</text>
+      <text>{{durationStr}}</text>
+    </view>
+  </view>
+
+  <view class="controls">
+    <view class="btn-play-wrapper {{isPlaying ? 'paused' : ''}}" bindtap="togglePlay">
+      <view class="play-icon-inner"></view>
+    </view>
+  </view>
+  
+  <view class="actions" wx:if="{{isMine}}">
+    <text class="delete-btn" bindtap="deleteCapsule">删除胶囊</text>
+  </view>
+</view>

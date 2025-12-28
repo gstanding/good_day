@@ -1,0 +1,120 @@
+// subpackages/timecapsule/utils/capsuleService.js
+const storage = require('./storage'); 
+const util = require('./util');
+
+const KEY = 'TIME_CAPSULES';
+const DISCOVERY_RADIUS = 50; // meters
+const DISCOVERY_LIMIT = 5; // daily limit
+
+// Helper to calculate distance between two coords in meters
+const getDistance = (lat1, lng1, lat2, lng2) => {
+    const R = 6371e3; // Earth radius
+    const φ1 = lat1 * Math.PI / 180;
+    const φ2 = lat2 * Math.PI / 180;
+    const Δφ = (lat2 - lat1) * Math.PI / 180;
+    const Δλ = (lng2 - lng1) * Math.PI / 180;
+
+    const a = Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
+              Math.cos(φ1) * Math.cos(φ2) *
+              Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+    return R * c;
+}
+
+const getCapsules = () => {
+    return wx.getStorageSync(KEY) || [];
+}
+
+const saveCapsule = (capsule) => {
+    const capsules = getCapsules();
+    // Capsule structure: 
+    // { id, latitude, longitude, filePath, duration, createdAt, userId(mock), title }
+    capsules.push(capsule);
+    wx.setStorageSync(KEY, capsules);
+    return capsules;
+}
+
+// Mock other users' capsules
+const seedMockCapsules = (lat, lng) => {
+    const seeded = wx.getStorageSync('SEEDED_CAPSULES');
+    if (seeded) return;
+
+    const capsules = getCapsules();
+    // Generate 3 random capsules around current location
+    for (let i = 0; i < 3; i++) {
+        // Random offset within ~100m
+        const latOffset = (Math.random() - 0.5) * 0.002;
+        const lngOffset = (Math.random() - 0.5) * 0.002;
+        
+        capsules.push({
+            id: util.uuid(),
+            latitude: lat + latOffset,
+            longitude: lng + lngOffset,
+            filePath: '', // No actual audio for mock, handled in player
+            duration: 30 + Math.floor(Math.random() * 30),
+            createdAt: Date.now() - Math.floor(Math.random() * 10000000),
+            userId: 'user_mock_' + i,
+            title: `来自未来的声音 #${i+1}`,
+            isMock: true
+        });
+    }
+    wx.setStorageSync(KEY, capsules);
+    wx.setStorageSync('SEEDED_CAPSULES', true);
+}
+
+const findNearbyCapsule = (lat, lng) => {
+    const capsules = getCapsules();
+    const todayStr = new Date().toDateString();
+    const dailyCount = wx.getStorageSync('DAILY_DISCOVERY_' + todayStr) || 0;
+    
+    if (dailyCount >= DISCOVERY_LIMIT) {
+        return { error: 'DAILY_LIMIT_REACHED' };
+    }
+
+    const nearby = capsules.filter(c => {
+        const dist = getDistance(lat, lng, c.latitude, c.longitude);
+        return dist <= DISCOVERY_RADIUS;
+    });
+
+    if (nearby.length > 0) {
+        // Filter out recently played or own capsules if needed
+        // For now just pick random
+        const random = nearby[Math.floor(Math.random() * nearby.length)];
+        
+        // Increment count
+        wx.setStorageSync('DAILY_DISCOVERY_' + todayStr, dailyCount + 1);
+        return { capsule: random };
+    }
+    
+    return { capsule: null };
+}
+
+const deleteCapsule = (id) => {
+    let capsules = getCapsules();
+    capsules = capsules.filter(c => c.id !== id);
+    wx.setStorageSync(KEY, capsules);
+}
+
+const findNearbyCapsules = (lat, lng, radius = 1000) => {
+    const capsules = getCapsules();
+    
+    const nearby = capsules.filter(c => {
+        const dist = getDistance(lat, lng, c.latitude, c.longitude);
+        return dist <= radius;
+    });
+
+    return nearby.map(c => ({
+        ...c,
+        distance: getDistance(lat, lng, c.latitude, c.longitude)
+    }));
+}
+
+module.exports = {
+    saveCapsule,
+    getCapsules,
+    findNearbyCapsule,
+    findNearbyCapsules,
+    seedMockCapsules,
+    deleteCapsule
+}

@@ -1,0 +1,157 @@
+/* subpackages/timecapsule/pages/player/player.wxss */
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f0f2f5;
+  padding: 40rpx;
+}
+
+.cassette {
+  width: 600rpx;
+  height: 380rpx;
+  background: #333;
+  border-radius: 20rpx;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30rpx;
+  box-shadow: 0 20rpx 50rpx rgba(0,0,0,0.2);
+  margin-bottom: 60rpx;
+}
+
+.tape-window {
+  width: 400rpx;
+  height: 120rpx;
+  background: #fff;
+  border-radius: 10rpx;
+  margin-top: 40rpx;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 40rpx;
+}
+
+.reel {
+  width: 80rpx;
+  height: 80rpx;
+  border: 4rpx solid #333;
+  border-radius: 50%;
+  position: relative;
+}
+
+.reel::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 20rpx;
+  height: 20rpx;
+  background: #333;
+}
+
+.reel.spinning {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.label {
+  margin-top: 40rpx;
+  width: 90%;
+  background: #f5d300;
+  padding: 10rpx 20rpx;
+  text-align: center;
+  transform: rotate(-1deg);
+  box-shadow: 2rpx 2rpx 5rpx rgba(0,0,0,0.1);
+}
+
+.title {
+  display: block;
+  font-weight: bold;
+  font-size: 32rpx;
+  color: #333;
+}
+
+.date {
+  display: block;
+  font-size: 20rpx;
+  color: #666;
+  margin-top: 4rpx;
+}
+
+.desc-area {
+  width: 100%;
+  padding: 0 40rpx;
+  margin-bottom: 40rpx;
+  text-align: center;
+}
+
+.desc-text {
+  font-size: 28rpx;
+  color: #666;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.progress-area {
+  width: 100%;
+  margin-bottom: 60rpx;
+}
+
+.time-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24rpx;
+  color: #999;
+  padding: 0 20rpx;
+}
+
+.controls {
+  margin-bottom: 40rpx;
+}
+
+.btn-play-wrapper {
+  width: 120rpx;
+  height: 120rpx;
+  background: #333;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10rpx 20rpx rgba(0,0,0,0.2);
+}
+
+.play-icon-inner {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 30rpx 0 30rpx 50rpx;
+  border-color: transparent transparent transparent #fff;
+  /* Visual center adjustment */
+  margin-left: 10rpx; 
+}
+
+.btn-play-wrapper.paused .play-icon-inner {
+  width: 40rpx;
+  height: 50rpx;
+  border: none;
+  margin-left: 0;
+  border-left: 12rpx solid #fff;
+  border-right: 12rpx solid #fff;
+  background: transparent;
+  box-sizing: border-box;
+}
+
+.delete-btn {
+  color: #ff4d4f;
+  font-size: 28rpx;
+  text-decoration: underline;
+}

@@ -1,0 +1,83 @@
+/* pages/index/index.wxss */
+.header {
+  padding: 30rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+}
+
+.title {
+  font-size: 40rpx;
+  font-weight: bold;
+}
+
+.add-btn {
+  width: 60rpx;
+  height: 60rpx;
+  background-color: var(--primary-color);
+  border-radius: 50%;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  box-shadow: 0 4rpx 10rpx rgba(255, 77, 79, 0.3);
+}
+
+.list {
+  padding-bottom: 40rpx;
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.card-title {
+  font-size: 32rpx;
+  font-weight: 500;
+}
+
+.card-date {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.card-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+.days-wrapper {
+  display: flex;
+  align-items: baseline;
+}
+
+.days-num {
+  font-size: 60rpx;
+  font-weight: bold;
+  margin-right: 10rpx;
+}
+
+.days-unit {
+  font-size: 24rpx;
+  color: #666;
+}
+
+.card-label {
+  font-size: 24rpx;
+  color: #999;
+  padding-bottom: 10rpx;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 200rpx;
+  color: #999;
+}

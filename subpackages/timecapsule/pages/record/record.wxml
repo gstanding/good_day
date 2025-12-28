@@ -1,0 +1,31 @@
+<!--subpackages/timecapsule/pages/record/record.wxml-->
+<view class="container">
+  <view class="timer">{{duration}}s</view>
+  <view class="status">{{status}}</view>
+
+  <view class="controls" wx:if="{{!isRecorded}}">
+    <view class="btn-cancel" bindtap="cancel" wx:if="{{isRecording}}">取消</view>
+    
+    <view class="btn-record {{isRecording ? 'recording' : ''}}" 
+          bindlongpress="startRecord" 
+          bindtouchend="stopRecord"
+          bindtap="handleTap">
+      <view class="mic-icon"></view>
+    </view>
+    
+    <!-- Placeholder for balance -->
+    <view style="width: 100rpx;" wx:if="{{isRecording}}"></view>
+  </view>
+  
+  <text class="tips" wx:if="{{!isRecorded}}">长按录音，松开结束 (最长60秒)</text>
+
+  <view class="form-area" wx:if="{{isRecorded}}">
+    <input class="input-title" placeholder="给胶囊起个名字" placeholder-class="placeholder" value="{{title}}" bindinput="onTitleInput" />
+    <textarea class="input-desc" placeholder="写下此刻的心情或故事..." placeholder-class="placeholder" value="{{description}}" bindinput="onDescInput" />
+    
+    <view class="form-actions">
+      <button class="btn-discard" bindtap="discardRecord">重新录制</button>
+      <button class="btn-save" bindtap="confirmSave">埋下胶囊</button>
+    </view>
+  </view>
+</view>

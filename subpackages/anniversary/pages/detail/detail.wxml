@@ -1,0 +1,38 @@
+<!--pages/detail/detail.wxml-->
+<view class="container" style="background-color: {{item.theme}}">
+  <view class="detail-card">
+    <view class="header">
+      <text class="title">{{item.title}}</text>
+      <view class="actions">
+        <view class="edit-btn" bindtap="goEdit">
+          <text class="edit-icon">✎</text>
+          <text class="action-text">编辑</text>
+        </view>
+      </view>
+    </view>
+    
+    <view class="main-display">
+      <text class="label">{{item.mode === 'countDown' ? '剩余' : '已过去'}}</text>
+      <view class="days-container">
+        <text class="days">{{item.days}}</text>
+        <text class="unit">天</text>
+      </view>
+      <view class="progress-bar" wx:if="{{item.mode === 'countDown'}}">
+        <progress percent="{{item.progress}}" stroke-width="6" activeColor="#333" backgroundColor="#eee" border-radius="10" />
+        <text class="progress-text">当前周期已过 {{item.progress}}%</text>
+      </view>
+    </view>
+
+    <view class="footer-info">
+      <text class="date-info">{{item.displayDate}}</text>
+      <text class="type-info">{{item.type === 'lunar' ? '农历' : '公历'}}</text>
+      <view class="reminder-btn" bindtap="addToCalendar" wx:if="{{item.mode === 'countDown'}}">
+        <text>添加到日历</text>
+      </view>
+    </view>
+
+    <view class="share-area">
+      <button class="share-btn" open-type="share">分享给朋友</button>
+    </view>
+  </view>
+</view>

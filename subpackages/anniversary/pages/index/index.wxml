@@ -1,0 +1,31 @@
+<!--pages/index/index.wxml-->
+<view class="container">
+  <view class="header">
+    <text class="title">我的纪念日</text>
+    <view class="add-btn" bindtap="goAdd">
+      <text>+</text>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="list">
+    <block wx:if="{{list.length > 0}}">
+      <view class="card" wx:for="{{list}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}" style="border-left: 8rpx solid {{item.theme}}">
+        <view class="card-top">
+          <text class="card-title">{{item.title}}</text>
+          <text class="card-date">{{item.displayDate}}</text>
+        </view>
+        <view class="card-main">
+          <view class="days-wrapper">
+             <text class="days-num" style="color: {{item.theme}}">{{item.days}}</text>
+             <text class="days-unit">天</text>
+          </view>
+          <text class="card-label">{{item.mode === 'countDown' ? '剩余' : '已过去'}}</text>
+        </view>
+      </view>
+    </block>
+    <view wx:else class="empty-state">
+      <text>还没有添加纪念日</text>
+      <button class="btn-primary" bindtap="goAdd" style="margin-top: 20rpx;">添加第一个纪念日</button>
+    </view>
+  </scroll-view>
+</view>

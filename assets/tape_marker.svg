@@ -1,0 +1,31 @@
+<svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" version="1.1">
+  <title>Cassette Tape Map Marker</title>
+  <desc>A minimalist flat design cassette tape icon for map markers, in coral red #ff4d4f.</desc>
+  
+  <!-- Main Cassette Body -->
+  <rect x="4" y="12" width="56" height="40" rx="4" ry="4" fill="#ff4d4f" stroke="#ffffff" stroke-width="2"/>
+  
+  <!-- Top Label Area -->
+  <rect x="8" y="16" width="48" height="8" rx="2" ry="2" fill="#ffffff" fill-opacity="0.9"/>
+  
+  <!-- Tape Window (Trapezoid-like shape) -->
+  <path d="M14 28 L50 28 L52 44 L12 44 Z" fill="#333333"/>
+  
+  <!-- Left Reel -->
+  <circle cx="22" cy="36" r="5" fill="#ffffff" stroke="#ff4d4f" stroke-width="2"/>
+  <circle cx="22" cy="36" r="1.5" fill="#ff4d4f"/>
+  
+  <!-- Right Reel -->
+  <circle cx="42" cy="36" r="5" fill="#ffffff" stroke="#ff4d4f" stroke-width="2"/>
+  <circle cx="42" cy="36" r="1.5" fill="#ff4d4f"/>
+  
+  <!-- Tape between reels -->
+  <rect x="27" y="34" width="10" height="4" fill="#1a1a1a"/>
+  
+  <!-- Bottom Screws -->
+  <circle cx="8" cy="48" r="1.5" fill="#ffffff"/>
+  <circle cx="56" cy="48" r="1.5" fill="#ffffff"/>
+  
+  <!-- Map Pin Pointer (Optional tail for better location accuracy) -->
+  <!-- <path d="M32 52 L28 58 L36 58 Z" fill="#ff4d4f"/> -->
+</svg>

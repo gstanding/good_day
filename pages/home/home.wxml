@@ -1,0 +1,40 @@
+<!--pages/home/home.wxml-->
+<view class="container">
+  <view class="header">
+    <text class="title">工具集</text>
+    <text class="subtitle">让生活更简单</text>
+  </view>
+
+  <view class="grid">
+    <view class="card tool-card" bindtap="goAnniversary">
+      <view class="icon-box" style="background-color: #ff4d4f;">
+        <text class="icon-text">📅</text>
+      </view>
+      <view class="info">
+        <text class="tool-name">纪念日</text>
+        <text class="tool-desc">记录重要时刻，倒数美好未来</text>
+      </view>
+    </view>
+
+    <view class="card tool-card" bindtap="goCapsule">
+      <view class="icon-box" style="background-color: #1890ff;">
+        <text class="icon-text">🎙️</text>
+      </view>
+      <view class="info">
+        <text class="tool-name">声音胶囊</text>
+        <text class="tool-desc">在时空里埋下你的声音</text>
+      </view>
+    </view>
+    
+    <!-- Placeholder for future tools -->
+    <view class="card tool-card placeholder">
+      <view class="icon-box" style="background-color: #eee;">
+        <text class="icon-text">➕</text>
+      </view>
+      <view class="info">
+        <text class="tool-name">敬请期待</text>
+        <text class="tool-desc">更多工具开发中...</text>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,62 @@
+<!--pages/edit/edit.wxml-->
+<view class="container">
+  <view class="form-group">
+    <view class="form-item">
+      <text class="label">标题</text>
+      <input class="input" placeholder="例如：生日" value="{{title}}" bindinput="onTitleChange" />
+    </view>
+  </view>
+
+  <view class="form-group">
+    <view class="form-item">
+      <text class="label">模式</text>
+      <view class="radio-group">
+        <view class="radio-item {{mode === 'countDown' ? 'active' : ''}}" bindtap="setMode" data-mode="countDown">倒数日</view>
+        <view class="radio-item {{mode === 'countUp' ? 'active' : ''}}" bindtap="setMode" data-mode="countUp">正数日</view>
+      </view>
+    </view>
+
+    <view class="form-item" wx:if="{{mode === 'countDown'}}">
+      <text class="label">循环</text>
+      <view class="radio-group">
+        <view wx:for="{{cycleOptions}}" wx:key="value" 
+              class="radio-item {{cycle === item.value ? 'active' : ''}}" 
+              bindtap="setCycle" data-cycle="{{item.value}}">{{item.name}}</view>
+      </view>
+    </view>
+    
+    <view class="form-item">
+      <text class="label">日历</text>
+      <view class="radio-group">
+        <view class="radio-item {{type === 'solar' ? 'active' : ''}}" bindtap="setType" data-type="solar">公历</view>
+        <view class="radio-item {{type === 'lunar' ? 'active' : ''}}" bindtap="setType" data-type="lunar">农历</view>
+      </view>
+    </view>
+
+    <view class="form-item">
+      <text class="label">日期</text>
+      <picker mode="date" value="{{date}}" bindchange="onDateChange">
+        <view class="picker">
+          {{date}}
+        </view>
+      </picker>
+    </view>
+  </view>
+
+  <view class="form-group">
+    <view class="form-item">
+      <text class="label">主题色</text>
+      <view class="color-options">
+        <view wx:for="{{colors}}" wx:key="*this" 
+              class="color-circle {{theme === item ? 'selected' : ''}}" 
+              style="background-color: {{item}}"
+              bindtap="setTheme" data-color="{{item}}"></view>
+      </view>
+    </view>
+  </view>
+
+  <view class="footer">
+    <button class="btn-primary" bindtap="save">保存</button>
+    <button class="btn-delete" wx:if="{{id}}" bindtap="delete">删除</button>
+  </view>
+</view>
