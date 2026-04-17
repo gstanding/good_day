@@ -3,10 +3,14 @@ const capsuleService = require('../../utils/capsuleService');
 
 Page({
   data: {
-    latitude: 39.9042, // Default Beijing
+    latitude: 39.9042,
     longitude: 116.4074,
     markers: [],
-    statusText: '正在定位...'
+    statusText: '正在定位...',
+    showPlogPanel: false,
+    plogLat: 0,
+    plogLng: 0,
+    plogRadius: 1000
   },
 
   onLoad() {
@@ -96,6 +100,30 @@ Page({
   goRecord() {
     wx.navigateTo({
       url: '/subpackages/timecapsule/pages/record/record',
+    });
+  },
+
+  onMapLongPress(e) {
+    this.setData({
+      showPlogPanel: true,
+      plogLat: e.detail.latitude,
+      plogLng: e.detail.longitude
+    });
+  },
+
+  onRadiusChange(e) {
+    this.setData({ plogRadius: e.detail.value });
+  },
+
+  closePlogPanel() {
+    this.setData({ showPlogPanel: false });
+  },
+
+  goPlog() {
+    const { plogLat, plogLng, plogRadius } = this.data;
+    this.setData({ showPlogPanel: false });
+    wx.navigateTo({
+      url: `/subpackages/timecapsule/pages/plog/plog?lat=${plogLat}&lng=${plogLng}&radius=${plogRadius}`
     });
   }
 })

@@ -1,21 +1,33 @@
 <!--subpackages/timecapsule/pages/map/map.wxml-->
 <view class="container">
-  <map id="myMap" 
-       class="map" 
-       latitude="{{latitude}}" 
-       longitude="{{longitude}}" 
-       markers="{{markers}}" 
-       show-location 
-       bindmarkertap="onMarkerTap"></map>
+  <map id="myMap"
+       class="map"
+       latitude="{{latitude}}"
+       longitude="{{longitude}}"
+       markers="{{markers}}"
+       show-location
+       bindmarkertap="onMarkerTap"
+       bindlongtap="onMapLongPress"></map>
 
   <view class="controls">
     <view class="btn-record" bindtap="goRecord">
       <view class="record-icon"></view>
       <text>埋下胶囊</text>
     </view>
-    
+
     <view class="location-status" bindtap="updateLocation">
       <text>{{statusText}}</text>
+    </view>
+  </view>
+
+  <view class="plog-panel" wx:if="{{showPlogPanel}}">
+    <text class="plog-panel-title">生成旅行记录</text>
+    <text class="plog-panel-hint">范围：{{plogRadius}}m</text>
+    <slider class="plog-slider" min="300" max="5000" step="100" value="{{plogRadius}}"
+            bindchange="onRadiusChange" activeColor="#4a90e2" block-size="20" />
+    <view class="plog-panel-actions">
+      <button class="btn-cancel-plog" bindtap="closePlogPanel">取消</button>
+      <button class="btn-go-plog" bindtap="goPlog">生成记录</button>
     </view>
   </view>
 </view>
