@@ -1,0 +1,75 @@
+<!--subpackages/timecapsule/pages/plog/plog.wxml-->
+
+<view wx:if="{{isEmpty}}" class="empty-container">
+  <text class="empty-icon">○</text>
+  <text class="empty-text">该范围内暂无胶囊</text>
+  <text class="empty-hint">试试扩大范围或选择其他位置</text>
+</view>
+
+<view wx:else class="container">
+  <!-- 地图区域 -->
+  <map class="plog-map"
+       latitude="{{mapLat}}"
+       longitude="{{mapLng}}"
+       scale="15"
+       markers="{{markers}}"
+       polyline="{{polyline}}"
+       show-location />
+
+  <!-- 时间线卡片列表 -->
+  <scroll-view class="timeline"
+               scroll-y
+               scroll-into-view="{{currentCardId}}"
+               scroll-with-animation>
+    <view wx:for="{{capsules}}" wx:key="id"
+          id="card-{{index}}"
+          class="card {{currentIndex === index ? 'card-active' : ''}}"
+          bindtap="tapCard"
+          data-index="{{index}}">
+
+      <view class="card-num {{currentIndex === index ? 'card-num-active' : ''}}">
+        <text>{{index + 1}}</text>
+      </view>
+
+      <image wx:if="{{item.imagePath}}"
+             class="card-img"
+             src="{{item.imagePath}}"
+             mode="aspectFill" />
+
+      <view class="card-body">
+        <text class="card-title">{{item.title}}</text>
+        <text wx:if="{{item.description}}" class="card-desc">{{item.description}}</text>
+        <text class="card-meta">{{item.timeStr}} · {{item.durationStr}}</text>
+      </view>
+
+      <view wx:if="{{currentIndex === index && isPlaying}}" class="playing-indicator">
+        <view class="bar bar1"></view>
+        <view class="bar bar2"></view>
+        <view class="bar bar3"></view>
+      </view>
+    </view>
+
+    <view class="timeline-end">
+      <text>- 旅程结束 -</text>
+    </view>
+  </scroll-view>
+
+  <!-- 底部播放控制栏 -->
+  <view class="player-bar">
+    <view class="bar-title">
+      <text wx:if="{{currentIndex >= 0}}" class="bar-title-text">{{capsules[currentIndex].title}}</text>
+      <text wx:else class="bar-title-text">共 {{capsules.length}} 个胶囊，点击播放</text>
+    </view>
+    <view class="bar-controls">
+      <view class="ctrl-btn" bindtap="prevCapsule">
+        <view class="icon-prev"></view>
+      </view>
+      <view class="ctrl-btn ctrl-play" bindtap="togglePlay">
+        <view class="{{isPlaying ? 'icon-pause' : 'icon-play'}}"></view>
+      </view>
+      <view class="ctrl-btn" bindtap="nextCapsule">
+        <view class="icon-next"></view>
+      </view>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,252 @@
+/* subpackages/timecapsule/pages/plog/plog.wxss */
+
+/* ── 空态 ── */
+.empty-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #f7f8fa;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  color: #ccc;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  font-size: 32rpx;
+  color: #666;
+  margin-bottom: 12rpx;
+}
+
+.empty-hint {
+  font-size: 26rpx;
+  color: #aaa;
+}
+
+/* ── 主容器 ── */
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: #f7f8fa;
+}
+
+/* ── 地图 ── */
+.plog-map {
+  width: 100%;
+  height: 360rpx;
+  flex-shrink: 0;
+}
+
+/* ── 时间线列表 ── */
+.timeline {
+  flex: 1;
+  overflow: hidden;
+  padding: 20rpx 30rpx 160rpx;
+  box-sizing: border-box;
+}
+
+.card {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 16rpx;
+  margin-bottom: 20rpx;
+  padding: 24rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0,0,0,0.06);
+  border: 3rpx solid transparent;
+  transition: border-color 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.card-active {
+  border-color: #4a90e2;
+}
+
+.card-num {
+  width: 52rpx;
+  height: 52rpx;
+  border-radius: 50%;
+  background: #e8f0fb;
+  color: #4a90e2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  font-weight: bold;
+  flex-shrink: 0;
+  margin-right: 20rpx;
+}
+
+.card-num-active {
+  background: #4a90e2;
+  color: #fff;
+}
+
+.card-img {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 10rpx;
+  margin-right: 20rpx;
+  flex-shrink: 0;
+}
+
+.card-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-desc {
+  display: block;
+  font-size: 24rpx;
+  color: #888;
+  margin-bottom: 8rpx;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.card-meta {
+  display: block;
+  font-size: 22rpx;
+  color: #bbb;
+}
+
+/* 播放中动效（三根跳动柱） */
+.playing-indicator {
+  display: flex;
+  align-items: flex-end;
+  gap: 4rpx;
+  height: 32rpx;
+  margin-left: 16rpx;
+  flex-shrink: 0;
+}
+
+.bar {
+  width: 6rpx;
+  background: #4a90e2;
+  border-radius: 3rpx;
+  animation: bounce 0.8s ease-in-out infinite;
+}
+
+.bar1 { height: 20rpx; animation-delay: 0s; }
+.bar2 { height: 30rpx; animation-delay: 0.15s; }
+.bar3 { height: 16rpx; animation-delay: 0.3s; }
+
+@keyframes bounce {
+  0%, 100% { transform: scaleY(0.5); }
+  50% { transform: scaleY(1.2); }
+}
+
+.timeline-end {
+  text-align: center;
+  font-size: 24rpx;
+  color: #ccc;
+  padding: 20rpx 0 10rpx;
+}
+
+/* ── 底部播放栏 ── */
+.player-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 130rpx;
+  background: #fff;
+  border-top: 1rpx solid #eee;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+  box-shadow: 0 -4rpx 16rpx rgba(0,0,0,0.06);
+}
+
+.bar-title {
+  flex: 1;
+  min-width: 0;
+  margin-right: 20rpx;
+}
+
+.bar-title-text {
+  font-size: 28rpx;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bar-controls {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.ctrl-btn {
+  width: 72rpx;
+  height: 72rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ctrl-play {
+  width: 88rpx;
+  height: 88rpx;
+  background: #4a90e2;
+  border-radius: 50%;
+  box-shadow: 0 4rpx 12rpx rgba(74,144,226,0.4);
+}
+
+/* 播放图标（三角形） */
+.icon-play {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 18rpx 0 18rpx 30rpx;
+  border-color: transparent transparent transparent #fff;
+  margin-left: 6rpx;
+}
+
+/* 暂停图标（两竖条） */
+.icon-pause {
+  width: 28rpx;
+  height: 32rpx;
+  border-left: 9rpx solid #fff;
+  border-right: 9rpx solid #fff;
+  box-sizing: border-box;
+}
+
+/* 上一条图标 */
+.icon-prev {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 14rpx 22rpx 14rpx 0;
+  border-color: transparent #999 transparent transparent;
+}
+
+/* 下一条图标 */
+.icon-next {
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 14rpx 0 14rpx 22rpx;
+  border-color: transparent transparent transparent #999;
+}

@@ -16,7 +16,8 @@
       "pages": [
         "pages/map/map",
         "pages/record/record",
-        "pages/player/player"
+        "pages/player/player",
+        "pages/plog/plog"
       ]
     }
   ],
