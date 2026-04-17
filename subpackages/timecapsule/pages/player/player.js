@@ -14,7 +14,8 @@ Page({
     currentTimeStr: '00:00',
     durationStr: '00:00',
     isPlaying: false,
-    isMine: false
+    isMine: false,
+    imagePath: ''
   },
 
   onLoad(options) {
@@ -40,7 +41,8 @@ Page({
         date: util.formatTime(new Date(capsule.createdAt)),
         duration: capsule.duration,
         durationStr: this.formatDuration(capsule.duration),
-        isMine: !!capsule.isMine
+        isMine: !!capsule.isMine,
+        imagePath: capsule.imagePath || ''
       });
       
       if (capsule.isMock) {

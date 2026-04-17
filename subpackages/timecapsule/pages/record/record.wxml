@@ -23,6 +23,13 @@
     <input class="input-title" placeholder="给胶囊起个名字" placeholder-class="placeholder" value="{{title}}" bindinput="onTitleInput" />
     <textarea class="input-desc" placeholder="写下此刻的心情或故事..." placeholder-class="placeholder" value="{{description}}" bindinput="onDescInput" />
     
+    <view class="image-picker" bindtap="chooseImage">
+      <image wx:if="{{tempImagePath}}" class="image-preview" src="{{tempImagePath}}" mode="aspectFill" />
+      <view wx:else class="image-placeholder">
+        <text class="image-hint">+ 添加封面照片（可选）</text>
+      </view>
+    </view>
+
     <view class="form-actions">
       <button class="btn-discard" bindtap="discardRecord">重新录制</button>
       <button class="btn-save" bindtap="confirmSave">埋下胶囊</button>

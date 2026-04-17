@@ -87,6 +87,24 @@
   margin-top: 4rpx;
 }
 
+.cassette-with-image {
+  background-size: cover;
+  background-position: center;
+  justify-content: space-between;
+}
+
+.tape-window-overlay {
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.cassette-with-image .label {
+  width: 100%;
+  margin-top: 0;
+  background: rgba(245, 211, 0, 0.88);
+  border-radius: 0 0 16rpx 16rpx;
+  transform: none;
+}
+
 .desc-area {
   width: 100%;
   padding: 0 40rpx;

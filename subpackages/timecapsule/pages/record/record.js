@@ -11,6 +11,7 @@ Page({
     duration: 0,
     status: '准备录音',
     tempFilePath: '',
+    tempImagePath: '',
     title: '',
     description: ''
   },
@@ -97,12 +98,24 @@ Page({
     this.setData({ description: e.detail.value });
   },
 
+  chooseImage() {
+    wx.chooseMedia({
+      count: 1,
+      mediaType: ['image'],
+      sourceType: ['album', 'camera'],
+      success: (res) => {
+        this.setData({ tempImagePath: res.tempFiles[0].tempFilePath });
+      }
+    });
+  },
+
   discardRecord() {
     this.setData({
       isRecorded: false,
       status: '准备录音',
       duration: 0,
       tempFilePath: '',
+      tempImagePath: '',
       title: '',
       description: ''
     });
@@ -117,7 +130,7 @@ Page({
       return;
     }
 
-    const { tempFilePath, duration, title, description } = this.data;
+    const { tempFilePath, tempImagePath, duration, title, description } = this.data;
     
     wx.showLoading({ title: '埋藏中...' });
 
@@ -136,18 +149,28 @@ Page({
           isMine: true
         };
         
-        // Save temp file to persistent storage
+        const finalize = (imagePath) => {
+          if (imagePath) capsule.imagePath = imagePath;
+          capsuleService.saveCapsule(capsule);
+          wx.hideLoading();
+          wx.showToast({ title: '胶囊已埋下' });
+          setTimeout(() => wx.navigateBack(), 1500);
+        };
+
         wx.getFileSystemManager().saveFile({
           tempFilePath: tempFilePath,
           success: (saveRes) => {
             capsule.filePath = saveRes.savedFilePath;
-            capsuleService.saveCapsule(capsule);
-            
-            wx.hideLoading();
-            wx.showToast({ title: '胶囊已埋下' });
-            setTimeout(() => {
-              wx.navigateBack();
-            }, 1500);
+
+            if (tempImagePath) {
+              wx.getFileSystemManager().saveFile({
+                tempFilePath: tempImagePath,
+                success: (imgRes) => finalize(imgRes.savedFilePath),
+                fail: () => finalize('')
+              });
+            } else {
+              finalize('');
+            }
           },
           fail: (err) => {
             console.error(err);
