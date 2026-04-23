@@ -113,28 +113,47 @@ Page({
     wx.setBackgroundColor({ backgroundColor: t.pageBg });
   },
 
+  // ── 数据加载 ──────────────────────────────────────
+
   _loadStats() {
-    // Anniversary: find nearest upcoming countdown
+    this._loadAnniversary();
+    this._loadCapsule();
+  },
+
+  _loadAnniversary() {
     try {
       const items = wx.getStorageSync('GOOD_DAY_ANNIVERSARIES') || [];
-      const countdowns = items.filter(i => i.mode === 'countdown');
-      let best = null, bestDays = Infinity;
+      // 注意：mode 字段为 'countDown'（大写 D）
+      const countdowns = items.filter(i => i.mode === 'countDown');
+
+      if (!countdowns.length) {
+        this.setData({ hasAnniversary: false, annMeta: '' });
+        return;
+      }
+
       const now = new Date();
+      now.setHours(0, 0, 0, 0);
+      let best = null, bestDays = Infinity;
+
       countdowns.forEach(item => {
-        const parts = (item.date || '').split('-');
-        if (parts.length < 3) return;
-        const d = new Date(now.getFullYear(), parseInt(parts[1]) - 1, parseInt(parts[2]));
-        if (d <= now) d.setFullYear(d.getFullYear() + 1);
-        const days = Math.ceil((d - now) / 86400000);
-        if (days < bestDays) { bestDays = days; best = { item, days, date: d }; }
+        const next = this._calcNextOccurrence(item.date, item.cycle || 'year');
+        if (!next) return;
+        const days = Math.ceil((next - now) / 86400000);
+        if (days >= 0 && days < bestDays) {
+          bestDays = days;
+          best = { item, days, next };
+        }
       });
+
       if (best) {
+        const m = best.next.getMonth() + 1;
+        const d = best.next.getDate();
         this.setData({
           hasAnniversary: true,
           heroTitle: best.item.title,
           heroDays: best.days,
-          heroDate: `${best.date.getMonth() + 1}月${best.date.getDate()}日`,
-          annMeta: `距下一个 ${best.days} 天`,
+          heroDate: `${m}月${d}日`,
+          annMeta: best.days === 0 ? '就是今天' : `距下一个 ${best.days} 天`,
         });
       } else {
         this.setData({ hasAnniversary: false, annMeta: '' });
@@ -142,8 +161,41 @@ Page({
     } catch (e) {
       this.setData({ hasAnniversary: false, annMeta: '' });
     }
+  },
 
-    // Capsule count
+  // 仅支持公历，覆盖绝大多数场景；农历倒计时用近似值
+  _calcNextOccurrence(dateStr, cycle) {
+    const parts = dateStr.split('-').map(Number);
+    if (parts.length < 3) return null;
+    const [, month, day] = parts;
+
+    const now = new Date();
+    now.setHours(0, 0, 0, 0);
+
+    if (cycle === 'week') {
+      const origin = new Date(parts[0], month - 1, day);
+      const targetDow = origin.getDay();
+      const todayDow = now.getDay();
+      let diff = (targetDow - todayDow + 7) % 7;
+      if (diff === 0) diff = 7; // 同一天算下周
+      const next = new Date(now);
+      next.setDate(now.getDate() + diff);
+      return next;
+    }
+
+    if (cycle === 'month') {
+      const next = new Date(now.getFullYear(), now.getMonth(), day);
+      if (next <= now) next.setMonth(next.getMonth() + 1);
+      return next;
+    }
+
+    // year（默认）
+    const next = new Date(now.getFullYear(), month - 1, day);
+    if (next < now) next.setFullYear(next.getFullYear() + 1);
+    return next;
+  },
+
+  _loadCapsule() {
     try {
       const capsules = wx.getStorageSync('TIME_CAPSULES') || [];
       const mine = capsules.filter(c => c.isMine && !c.isMock);
@@ -152,6 +204,8 @@ Page({
       this.setData({ capMeta: '' });
     }
   },
+
+  // ── 主题 ──────────────────────────────────────────
 
   openPicker() {
     this.setData({ pickerOpen: true });
@@ -167,7 +221,14 @@ Page({
     setTimeout(() => this.setData({ pickerOpen: false }), 180);
   },
 
+  // ── 导航 ──────────────────────────────────────────
+
   goAnniversary() {
+    wx.navigateTo({ url: '/subpackages/anniversary/pages/index/index' });
+  },
+
+  // Hero 卡点击：有纪念日时进列表，无时也进列表（可添加）
+  goHero() {
     wx.navigateTo({ url: '/subpackages/anniversary/pages/index/index' });
   },
 

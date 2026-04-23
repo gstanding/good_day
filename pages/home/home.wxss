@@ -120,6 +120,12 @@ page { background-color: transparent; }
   font-weight: 500;
 }
 
+.hero-today {
+  font-size: 56rpx;
+  font-weight: 700;
+  letter-spacing: -1rpx;
+}
+
 .hero-empty {
   font-size: 28rpx;
   font-weight: 500;

@@ -19,7 +19,7 @@
     </view>
 
     <!-- ── Hero card ── -->
-    <view class="hero" style="background:{{t.heroBg}}; box-shadow:{{t.heroShadow}}">
+    <view class="hero" style="background:{{t.heroBg}}; box-shadow:{{t.heroShadow}}" bindtap="goHero">
       <view class="hero-circle"></view>
       <view class="hero-eyebrow">
         <view class="hero-dot" style="background:{{t.heroAccent}}"></view>
@@ -28,14 +28,19 @@
       <block wx:if="{{hasAnniversary}}">
         <text class="hero-title" style="color:{{t.heroText}}">{{heroTitle}}</text>
         <view class="hero-count-row">
-          <text class="hero-days" style="color:{{t.heroText}}">{{heroDays}}</text>
-          <text class="hero-date-label" style="color:{{t.heroMuted}}">天后 · {{heroDate}}</text>
+          <block wx:if="{{heroDays === 0}}">
+            <text class="hero-today" style="color:{{t.heroAccent}}">就是今天</text>
+          </block>
+          <block wx:else>
+            <text class="hero-days" style="color:{{t.heroText}}">{{heroDays}}</text>
+            <text class="hero-date-label" style="color:{{t.heroMuted}}">天后 · {{heroDate}}</text>
+          </block>
         </view>
       </block>
       <block wx:else>
         <text class="hero-title" style="color:{{t.heroText}}">去记录一个重要时刻</text>
         <view class="hero-count-row">
-          <text class="hero-empty" style="color:{{t.heroMuted}}" bindtap="goAnniversary">点击纪念日开始添加 →</text>
+          <text class="hero-empty" style="color:{{t.heroMuted}}">点击进入纪念日 →</text>
         </view>
       </block>
     </view>
