@@ -16,7 +16,9 @@ Page({
       { name: '每年', value: 'year' },
       { name: '每月', value: 'month' },
       { name: '每周', value: 'week' }
-    ]
+    ],
+    imagePath: '',
+    tempImagePath: '',
   },
 
   onLoad(options) {
@@ -30,7 +32,8 @@ Page({
           mode: item.mode,
           cycle: item.cycle || 'year',
           type: item.type,
-          theme: item.theme
+          theme: item.theme,
+          imagePath: item.imagePath || '',
         });
         wx.setNavigationBarTitle({
           title: '编辑',
@@ -67,6 +70,21 @@ Page({
     this.setData({ theme: e.currentTarget.dataset.color });
   },
 
+  chooseImage() {
+    wx.chooseMedia({
+      count: 1,
+      mediaType: ['image'],
+      sourceType: ['album', 'camera'],
+      success: (res) => {
+        this.setData({ tempImagePath: res.tempFiles[0].tempFilePath });
+      }
+    });
+  },
+
+  removeImage() {
+    this.setData({ imagePath: '', tempImagePath: '' });
+  },
+
   save() {
     if (!this.data.title) {
       wx.showToast({
@@ -83,11 +101,28 @@ Page({
       mode: this.data.mode,
       cycle: this.data.cycle,
       type: this.data.type,
-      theme: this.data.theme
+      theme: this.data.theme,
     };
 
-    storage.saveItem(item);
-    wx.navigateBack();
+    const { tempImagePath, imagePath } = this.data;
+
+    const finalize = (imgPath) => {
+      if (imgPath) item.imagePath = imgPath;
+      storage.saveItem(item);
+      wx.hideLoading();
+      wx.navigateBack();
+    };
+
+    if (tempImagePath) {
+      wx.showLoading({ title: '保存中...' });
+      wx.getFileSystemManager().saveFile({
+        tempFilePath: tempImagePath,
+        success: (res) => finalize(res.savedFilePath),
+        fail: () => finalize(imagePath),
+      });
+    } else {
+      finalize(imagePath);
+    }
   },
 
   delete() {

@@ -7,6 +7,21 @@
   padding: 40rpx;
 }
 
+.detail-bg-image {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+}
+
+.detail-bg-dim {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.42);
+}
+
 .detail-card {
   background: rgba(255, 255, 255, 0.95);
   width: 100%;
@@ -17,6 +32,52 @@
   flex-direction: column;
   align-items: center;
   position: relative;
+  overflow: hidden;
+}
+
+.detail-card-photo {
+  background: transparent;
+}
+
+.card-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.detail-card-photo .title,
+.detail-card-photo .days,
+.detail-card-photo .date-info {
+  color: #fff;
+}
+
+.detail-card-photo .label,
+.detail-card-photo .unit,
+.detail-card-photo .type-info,
+.detail-card-photo .progress-text {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.detail-card-photo .edit-icon,
+.detail-card-photo .action-text {
+  color: #fff;
+}
+
+.detail-card-photo .edit-btn {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.detail-card-photo .reminder-btn {
+  border-color: rgba(255, 255, 255, 0.8);
+  color: #fff;
+}
+
+.detail-card-photo .share-btn {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
 }
 
 .header {

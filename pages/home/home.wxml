@@ -19,30 +19,34 @@
     </view>
 
     <!-- ── Hero card ── -->
-    <view class="hero" style="background:{{t.heroBg}}; box-shadow:{{t.heroShadow}}" bindtap="goHero">
+    <view class="hero {{annImagePath ? 'hero-with-photo' : ''}}" style="{{annImagePath ? '' : 'background:' + t.heroBg + ';'}} box-shadow:{{t.heroShadow}}" bindtap="goHero">
+      <image wx:if="{{annImagePath}}" class="hero-bg-image" src="{{annImagePath}}" mode="aspectFill" />
+      <view wx:if="{{annImagePath}}" class="hero-bg-dim"></view>
       <view class="hero-circle"></view>
-      <view class="hero-eyebrow">
-        <view class="hero-dot" style="background:{{t.heroAccent}}"></view>
-        <text class="hero-eyebrow-text" style="color:{{t.heroText}}">下一个纪念日</text>
+      <view class="hero-content">
+        <view class="hero-eyebrow">
+          <view class="hero-dot" style="background:{{annImagePath ? '#fff' : t.heroAccent}}"></view>
+          <text class="hero-eyebrow-text" style="color:{{annImagePath ? '#fff' : t.heroText}}">下一个纪念日</text>
+        </view>
+        <block wx:if="{{hasAnniversary}}">
+          <text class="hero-title" style="color:{{annImagePath ? '#fff' : t.heroText}}">{{heroTitle}}</text>
+          <view class="hero-count-row">
+            <block wx:if="{{heroDays === 0}}">
+              <text class="hero-today" style="color:{{annImagePath ? '#fff' : t.heroAccent}}">就是今天</text>
+            </block>
+            <block wx:else>
+              <text class="hero-days" style="color:{{annImagePath ? '#fff' : t.heroText}}">{{heroDays}}</text>
+              <text class="hero-date-label" style="color:{{annImagePath ? 'rgba(255,255,255,0.8)' : t.heroMuted}}">天后 · {{heroDate}}</text>
+            </block>
+          </view>
+        </block>
+        <block wx:else>
+          <text class="hero-title" style="color:{{annImagePath ? '#fff' : t.heroText}}">去记录一个重要时刻</text>
+          <view class="hero-count-row">
+            <text class="hero-empty" style="color:{{annImagePath ? 'rgba(255,255,255,0.8)' : t.heroMuted}}">点击进入纪念日 →</text>
+          </view>
+        </block>
       </view>
-      <block wx:if="{{hasAnniversary}}">
-        <text class="hero-title" style="color:{{t.heroText}}">{{heroTitle}}</text>
-        <view class="hero-count-row">
-          <block wx:if="{{heroDays === 0}}">
-            <text class="hero-today" style="color:{{t.heroAccent}}">就是今天</text>
-          </block>
-          <block wx:else>
-            <text class="hero-days" style="color:{{t.heroText}}">{{heroDays}}</text>
-            <text class="hero-date-label" style="color:{{t.heroMuted}}">天后 · {{heroDate}}</text>
-          </block>
-        </view>
-      </block>
-      <block wx:else>
-        <text class="hero-title" style="color:{{t.heroText}}">去记录一个重要时刻</text>
-        <view class="hero-count-row">
-          <text class="hero-empty" style="color:{{t.heroMuted}}">点击进入纪念日 →</text>
-        </view>
-      </block>
     </view>
 
     <!-- ── 常用工具 ── -->

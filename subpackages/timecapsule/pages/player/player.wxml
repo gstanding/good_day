@@ -1,7 +1,7 @@
 <!--subpackages/timecapsule/pages/player/player.wxml-->
 <view class="container">
-  <view class="cassette {{imagePath ? 'cassette-with-image' : ''}}"
-        style="{{imagePath ? 'background-image: url(' + imagePath + ')' : ''}}">
+  <view class="cassette {{imagePath ? 'cassette-with-image' : ''}}">
+    <image wx:if="{{imagePath}}" class="cassette-bg-image" src="{{imagePath}}" mode="aspectFill" />
     <view class="tape-window {{imagePath ? 'tape-window-overlay' : ''}}">
       <view class="reel left {{isPlaying ? 'spinning' : ''}}"></view>
       <view class="reel right {{isPlaying ? 'spinning' : ''}}"></view>

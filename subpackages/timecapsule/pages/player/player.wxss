@@ -15,12 +15,22 @@
   background: #333;
   border-radius: 20rpx;
   position: relative;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 30rpx;
   box-shadow: 0 20rpx 50rpx rgba(0,0,0,0.2);
   margin-bottom: 60rpx;
+}
+
+.cassette-bg-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
 }
 
 .tape-window {
@@ -33,6 +43,8 @@
   justify-content: space-around;
   align-items: center;
   padding: 0 40rpx;
+  position: relative;
+  z-index: 1;
 }
 
 .reel {
@@ -71,6 +83,8 @@
   text-align: center;
   transform: rotate(-1deg);
   box-shadow: 2rpx 2rpx 5rpx rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 1;
 }
 
 .title {

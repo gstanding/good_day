@@ -92,6 +92,8 @@ Page({
     heroDays: 0,
     heroDate: '',
     annMeta: '',
+    annImagePath: '',
+    annId: '',
     capMeta: '',
   },
 
@@ -154,9 +156,11 @@ Page({
           heroDays: best.days,
           heroDate: `${m}月${d}日`,
           annMeta: best.days === 0 ? '就是今天' : `距下一个 ${best.days} 天`,
+          annImagePath: best.item.imagePath || '',
+          annId: best.item.id,
         });
       } else {
-        this.setData({ hasAnniversary: false, annMeta: '' });
+        this.setData({ hasAnniversary: false, annMeta: '', annImagePath: '', annId: '' });
       }
     } catch (e) {
       this.setData({ hasAnniversary: false, annMeta: '' });
@@ -227,9 +231,12 @@ Page({
     wx.navigateTo({ url: '/subpackages/anniversary/pages/index/index' });
   },
 
-  // Hero 卡点击：有纪念日时进列表，无时也进列表（可添加）
   goHero() {
-    wx.navigateTo({ url: '/subpackages/anniversary/pages/index/index' });
+    if (this.data.annId) {
+      wx.navigateTo({ url: `/subpackages/anniversary/pages/detail/detail?id=${this.data.annId}` });
+    } else {
+      wx.navigateTo({ url: '/subpackages/anniversary/pages/index/index' });
+    }
   },
 
   goCapsule() {
