@@ -35,23 +35,18 @@ const saveCapsule = (capsule) => {
     return capsules;
 }
 
-// Mock other users' capsules
+// Seed mock capsules near GPS — only when none remain, so individual deletions persist
 const seedMockCapsules = (lat, lng) => {
-    const seeded = wx.getStorageSync('SEEDED_CAPSULES');
-    if (seeded) return;
-
     const capsules = getCapsules();
-    // Generate 3 random capsules around current location
+    if (capsules.some(c => c.isMock)) return;
     for (let i = 0; i < 3; i++) {
-        // Random offset within ~100m
         const latOffset = (Math.random() - 0.5) * 0.002;
         const lngOffset = (Math.random() - 0.5) * 0.002;
-        
         capsules.push({
             id: util.uuid(),
             latitude: lat + latOffset,
             longitude: lng + lngOffset,
-            filePath: '', // No actual audio for mock, handled in player
+            filePath: '',
             duration: 30 + Math.floor(Math.random() * 30),
             createdAt: Date.now() - Math.floor(Math.random() * 10000000),
             userId: 'user_mock_' + i,
@@ -60,7 +55,6 @@ const seedMockCapsules = (lat, lng) => {
         });
     }
     wx.setStorageSync(KEY, capsules);
-    wx.setStorageSync('SEEDED_CAPSULES', true);
 }
 
 const findNearbyCapsule = (lat, lng) => {

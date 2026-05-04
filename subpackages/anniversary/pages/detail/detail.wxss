@@ -198,10 +198,28 @@
   color: #333;
 }
 
+.share-area {
+  display: flex;
+  gap: 20rpx;
+  width: 100%;
+}
+
 .share-btn {
+  flex: 1;
   background: #333;
   color: #fff;
   border-radius: 50rpx;
-  padding: 0 60rpx;
   font-size: 30rpx;
+}
+
+.oa-btn {
+  flex: 1;
+  background: #07c160;
+  color: #fff;
+  border-radius: 50rpx;
+  font-size: 30rpx;
+}
+
+.detail-card-photo .oa-btn {
+  background: rgba(7,193,96,0.75);
 }

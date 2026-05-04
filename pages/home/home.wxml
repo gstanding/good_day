@@ -86,6 +86,16 @@
 
     </view>
 
+    <!-- ── 社区动态 ── -->
+    <text wx:if="{{oaLoaded}}" class="section-label" style="color:{{t.sectionLabel}}">社区动态</text>
+    <view class="oa-wrap" style="{{oaLoaded ? '' : 'height:0;overflow:hidden;'}}">
+      <official-account-publish
+        username="{{oaUsername}}"
+        topic="声音胶囊"
+        bindload="onOALoad"
+        binderror="onOAError" />
+    </view>
+
     <!-- ── 即将推出 ── -->
     <text class="section-label" style="color:{{t.sectionLabel}}">即将推出</text>
     <view class="coming-row" style="background:{{t.comingBg}}; border-color:{{t.comingBorderColor}}">

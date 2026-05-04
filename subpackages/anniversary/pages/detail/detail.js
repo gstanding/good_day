@@ -90,6 +90,17 @@ Page({
     })
   },
 
+  shareToOA() {
+    const { item } = this.data;
+    const suffix = item.mode === 'countDown' ? `还有 ${item.days} 天` : `已过去 ${item.days} 天`;
+    wx.shareToOfficialAccount({
+      title: `${item.title} · ${suffix}`,
+      path: '/subpackages/anniversary/pages/list/list',
+      success: () => wx.showToast({ title: '已发布', icon: 'success' }),
+      fail: () => wx.showToast({ title: '发布失败', icon: 'none' })
+    });
+  },
+
   onShareAppMessage() {
     const item = this.data.item;
     return {

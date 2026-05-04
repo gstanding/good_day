@@ -111,6 +111,18 @@ Page({
     });
   },
 
+  shareToOA() {
+    wx.shareToOfficialAccount({
+      title: `声音胶囊：${this.data.title}`,
+      path: '/subpackages/timecapsule/pages/map/map',
+      success: () => wx.showToast({ title: '已发布', icon: 'success' }),
+      fail: (err) => {
+        const msg = err.errMsg || '';
+        wx.showToast({ title: msg.includes('auth') ? '需要授权' : '发布失败', icon: 'none' });
+      }
+    });
+  },
+
   formatDuration(seconds) {
     const min = Math.floor(seconds / 60);
     const sec = Math.floor(seconds % 60);

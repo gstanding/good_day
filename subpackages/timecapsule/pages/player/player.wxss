@@ -182,8 +182,22 @@
   box-sizing: border-box;
 }
 
+.actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 60rpx;
+  margin-top: 40rpx;
+}
+
 .delete-btn {
   color: #ff4d4f;
+  font-size: 28rpx;
+  text-decoration: underline;
+}
+
+.share-oa-btn {
+  color: #07c160;
   font-size: 28rpx;
   text-decoration: underline;
 }

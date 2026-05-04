@@ -299,6 +299,12 @@ page { background-color: transparent; }
   line-height: 1;
 }
 
+.oa-wrap {
+  margin: 0 36rpx 20rpx;
+  border-radius: 16rpx;
+  overflow: hidden;
+}
+
 .bottom-space { height: 60rpx; }
 
 /* ── Overlay ── */

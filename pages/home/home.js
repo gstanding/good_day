@@ -95,12 +95,16 @@ Page({
     annImagePath: '',
     annId: '',
     capMeta: '',
+    oaLoaded: false,
+    oaUsername: '',
   },
 
   onShow() {
     const saved = wx.getStorageSync('toolkit-theme') || 'minimal';
     this._applyTheme(saved, false);
     this._loadStats();
+    const app = getApp();
+    this.setData({ oaUsername: app.globalData.oaUsername || '' });
   },
 
   _applyTheme(key, save = true) {
@@ -242,4 +246,7 @@ Page({
   goCapsule() {
     wx.navigateTo({ url: '/subpackages/timecapsule/pages/map/map' });
   },
+
+  onOALoad() { this.setData({ oaLoaded: true }); },
+  onOAError() {},
 });

@@ -35,7 +35,8 @@
     </view>
   </view>
   
-  <view class="actions" wx:if="{{isMine}}">
+  <view class="actions">
     <text class="delete-btn" bindtap="deleteCapsule">删除胶囊</text>
+    <text class="share-oa-btn" bindtap="shareToOA">发布到公众号</text>
   </view>
 </view>

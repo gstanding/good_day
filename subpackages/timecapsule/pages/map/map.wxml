@@ -5,9 +5,9 @@
        latitude="{{latitude}}"
        longitude="{{longitude}}"
        markers="{{markers}}"
+       circles="{{circles}}"
        show-location
-       bindmarkertap="onMarkerTap"
-       bindlongtap="onMapLongPress"></map>
+       bindmarkertap="onMarkerTap"></map>
 
   <view class="controls">
     <view class="btn-record" bindtap="goRecord">
@@ -22,9 +22,18 @@
 
   <view class="plog-panel" wx:if="{{showPlogPanel}}">
     <text class="plog-panel-title">生成旅行记录</text>
-    <text class="plog-panel-hint">范围：{{plogRadius}}m</text>
-    <slider class="plog-slider" min="300" max="5000" step="100" value="{{plogRadius}}"
-            bindchange="onRadiusChange" activeColor="#4a90e2" block-size="20" />
+    <text class="plog-center-label" wx:if="{{plogCenterTitle}}">以「{{plogCenterTitle}}」为中心</text>
+    <view class="plog-radius-row">
+      <text class="plog-panel-hint">范围</text>
+      <text class="plog-radius-label">{{plogRadiusLabel}}</text>
+    </view>
+    <slider class="plog-slider"
+            min="0" max="100" step="1"
+            value="{{sliderValue}}"
+            activeColor="#4a90e2"
+            block-size="20"
+            bindchanging="onRadiusChange"
+            bindchange="onRadiusChange" />
     <view class="plog-panel-actions">
       <button class="btn-cancel-plog" bindtap="closePlogPanel">取消</button>
       <button class="btn-go-plog" bindtap="goPlog">生成记录</button>

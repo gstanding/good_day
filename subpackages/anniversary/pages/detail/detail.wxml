@@ -39,6 +39,7 @@
 
       <view class="share-area">
         <button class="share-btn" open-type="share">分享给朋友</button>
+        <button class="oa-btn" bindtap="shareToOA">发布到公众号</button>
       </view>
     </view>
   </view>

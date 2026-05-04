@@ -1,5 +1,6 @@
 {
-  "navigationBarTitleText": "旅行记录",
-  "navigationBarBackgroundColor": "#4a90e2",
-  "navigationBarTextStyle": "white"
+  "navigationBarTitleText": "声音胶囊 · 旅程",
+  "navigationBarBackgroundColor": "#000000",
+  "navigationBarTextStyle": "white",
+  "backgroundColor": "#000000"
 }

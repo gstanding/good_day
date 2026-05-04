@@ -1,75 +1,103 @@
 <!--subpackages/timecapsule/pages/plog/plog.wxml-->
 
+<!-- Empty state -->
 <view wx:if="{{isEmpty}}" class="empty-container">
   <text class="empty-icon">○</text>
   <text class="empty-text">该范围内暂无胶囊</text>
   <text class="empty-hint">试试扩大范围或选择其他位置</text>
 </view>
 
-<view wx:else class="container">
-  <!-- 地图区域 -->
-  <map class="plog-map"
-       latitude="{{mapLat}}"
-       longitude="{{mapLng}}"
-       scale="15"
-       markers="{{markers}}"
-       polyline="{{polyline}}"
-       show-location />
+<!-- Cinema player -->
+<view wx:else class="cinema">
 
-  <!-- 时间线卡片列表 -->
-  <scroll-view class="timeline"
-               scroll-y
-               scroll-into-view="{{currentCardId}}"
-               scroll-with-animation>
-    <view wx:for="{{capsules}}" wx:key="id"
-          id="card-{{index}}"
-          class="card {{currentIndex === index ? 'card-active' : ''}}"
-          bindtap="tapCard"
-          data-index="{{index}}">
-
-      <view class="card-num {{currentIndex === index ? 'card-num-active' : ''}}">
-        <text>{{index + 1}}</text>
-      </view>
-
+  <!-- Crossfade background layers, one per capsule -->
+  <block wx:for="{{capsules}}" wx:key="id">
+    <view class="bg-layer {{currentIndex === index ? 'bg-active' : ''}}">
       <image wx:if="{{item.imagePath}}"
-             class="card-img"
              src="{{item.imagePath}}"
-             mode="aspectFill" />
-
-      <view class="card-body">
-        <text class="card-title">{{item.title}}</text>
-        <text wx:if="{{item.description}}" class="card-desc">{{item.description}}</text>
-        <text class="card-meta">{{item.timeStr}} · {{item.durationStr}}</text>
-      </view>
-
-      <view wx:if="{{currentIndex === index && isPlaying}}" class="playing-indicator">
-        <view class="bar bar1"></view>
-        <view class="bar bar2"></view>
-        <view class="bar bar3"></view>
-      </view>
+             mode="aspectFill"
+             class="bg-photo {{currentIndex === index ? 'bg-photo-active' : ''}}" />
+      <view wx:else class="bg-grad" style="background: {{item.bgGradient}};" />
     </view>
+  </block>
 
-    <view class="timeline-end">
-      <text>- 旅程结束 -</text>
-    </view>
-  </scroll-view>
+  <!-- Gradient overlays -->
+  <view class="vignette" />
+  <view class="bottom-grad" />
 
-  <!-- 底部播放控制栏 -->
-  <view class="player-bar">
-    <view class="bar-title">
-      <text wx:if="{{currentIndex >= 0}}" class="bar-title-text">{{capsules[currentIndex].title}}</text>
-      <text wx:else class="bar-title-text">共 {{capsules.length}} 个胶囊，点击播放</text>
+  <!-- Story progress bars (top) -->
+  <view class="story-bars">
+    <block wx:for="{{capsules}}" wx:key="id">
+      <view class="bar-track">
+        <view class="bar-fill"
+              style="width: {{currentIndex > index ? 100 : (currentIndex === index ? progress : 0)}}%;">
+        </view>
+      </view>
+    </block>
+  </view>
+
+  <!-- Mini-map (top right) -->
+  <view class="mini-map-wrap">
+    <canvas type="2d" id="mini-map-canvas" class="mini-map-canvas" />
+  </view>
+
+  <!-- Spinning tape (center) -->
+  <view class="tape-section" wx:if="{{currentCapsule}}">
+    <view class="tape-disc {{isPlaying ? 'tape-spinning' : ''}}">
+      <view class="tape-ring tape-ring-1" />
+      <view class="tape-ring tape-ring-2" />
+      <view class="tape-ring tape-ring-3" />
+      <view wx:for="{{tickAngles}}" wx:key="index"
+            class="tape-tick {{index === 0 ? 'tape-tick-major' : ''}}"
+            style="transform: rotate({{item}}deg);" />
     </view>
-    <view class="bar-controls">
-      <view class="ctrl-btn" bindtap="prevCapsule">
-        <view class="icon-prev"></view>
-      </view>
-      <view class="ctrl-btn ctrl-play" bindtap="togglePlay">
-        <view class="{{isPlaying ? 'icon-pause' : 'icon-play'}}"></view>
-      </view>
-      <view class="ctrl-btn" bindtap="nextCapsule">
-        <view class="icon-next"></view>
-      </view>
+    <view class="tape-center-info">
+      <text class="tape-time">{{currentCapsule.timeOnly}}</text>
+      <text class="tape-counter">{{currentCapsule.indexLabel}} / {{totalLabel}}</text>
     </view>
   </view>
+
+  <!-- Bottom content -->
+  <view class="bottom-content" wx:if="{{currentCapsule}}">
+    <text class="cap-date">{{currentCapsule.capDateLabel}}</text>
+    <text class="cap-title">{{currentCapsule.title}}</text>
+    <text class="cap-desc" wx:if="{{currentCapsule.description}}">{{currentCapsule.description}}</text>
+
+    <!-- Waveform -->
+    <view class="waveform">
+      <view wx:for="{{waveformBars}}" wx:key="index"
+            class="wave-bar {{isPlaying ? 'wave-playing' : ''}}"
+            style="height: {{item.h}}rpx; animation-delay: {{item.delay}}s;">
+      </view>
+    </view>
+
+    <!-- Playback controls -->
+    <view class="controls">
+      <view class="ctrl-side" bindtap="prevCapsule">
+        <view class="arrow-prev" />
+      </view>
+      <view class="ctrl-main" bindtap="togglePlay">
+        <view wx:if="{{!isPlaying}}" class="icon-play" />
+        <view wx:else class="icon-pause">
+          <view class="pause-bar" />
+          <view class="pause-bar" />
+        </view>
+      </view>
+      <view class="ctrl-side" bindtap="nextCapsule">
+        <view class="arrow-next" />
+      </view>
+    </view>
+
+    <text class="auto-hint">{{isPlaying ? '自动播放中 · 点击暂停' : '已暂停 · 点击继续'}}</text>
+    <view class="plog-share-row">
+      <text class="plog-share-text" bindtap="shareToOA">发布到公众号</text>
+      <text class="plog-share-dot">·</text>
+      <text class="plog-share-text" bindtap="sharePoster">生成旅程海报</text>
+    </view>
+  </view>
+
 </view>
+
+<!-- Off-screen canvas for poster rendering -->
+<canvas type="2d" id="poster-canvas"
+        style="position:fixed;left:-400px;top:0;width:375px;height:667px;pointer-events:none;" />
