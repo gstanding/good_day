@@ -1,0 +1,54 @@
+<!--subpackages/flash/pages/edit/edit.wxml-->
+<view class="container">
+  <scroll-view class="form" scroll-y>
+
+    <!-- 标题 -->
+    <text class="field-label">标题</text>
+    <input class="field-input"
+           placeholder="一句话概括这个想法"
+           placeholder-style="color:#C7C7CC"
+           value="{{title}}"
+           bindinput="onTitleInput"
+           maxlength="60" />
+
+    <!-- 内容 -->
+    <text class="field-label">详细内容（可选）</text>
+    <textarea class="field-textarea"
+              placeholder="展开写写..."
+              placeholder-style="color:#C7C7CC"
+              value="{{content}}"
+              bindinput="onContentInput"
+              auto-height />
+
+    <!-- 标签 -->
+    <text class="field-label">标签（可选，逗号分隔，最多 5 个）</text>
+    <input class="field-input"
+           placeholder="例：产品，设计，读书"
+           placeholder-style="color:#C7C7CC"
+           value="{{tagsRaw}}"
+           bindinput="onTagInput" />
+    <view wx:if="{{tags.length}}" class="tag-chips">
+      <text wx:for="{{tags}}" wx:key="*this" class="tag-chip"># {{item}}</text>
+    </view>
+
+    <!-- 状态（仅编辑模式） -->
+    <block wx:if="{{isEdit}}">
+      <text class="field-label">状态</text>
+      <view class="status-options">
+        <view wx:for="{{statusOptions}}" wx:key="value"
+              class="status-option {{status === item.value ? 'status-option-active' : ''}}"
+              style="{{status === item.value ? 'background:' + item.color + ';' : ''}}"
+              bindtap="onStatusSelect" data-status="{{item.value}}">
+          <text class="status-option-text" style="color:{{status === item.value ? '#fff' : '#3C3C43'}}">
+            {{item.label}}
+          </text>
+        </view>
+      </view>
+    </block>
+
+    <view class="save-btn" bindtap="confirmSave">
+      <text class="save-text">保存</text>
+    </view>
+
+  </scroll-view>
+</view>

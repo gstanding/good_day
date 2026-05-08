@@ -1,0 +1,97 @@
+/* subpackages/flash/pages/edit/edit.wxss */
+page { background: #F4F4F6; }
+
+.container { height: 100vh; }
+
+.form {
+  height: 100%;
+  padding: 32rpx 32rpx 80rpx;
+  box-sizing: border-box;
+}
+
+.field-label {
+  display: block;
+  font-size: 22rpx;
+  font-weight: 600;
+  color: #8E8E93;
+  letter-spacing: 1rpx;
+  margin-bottom: 12rpx;
+  margin-top: 32rpx;
+}
+
+.field-label:first-child { margin-top: 0; }
+
+.field-input {
+  display: block;
+  width: 100%;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  font-size: 30rpx;
+  color: #1C1C1E;
+  box-sizing: border-box;
+}
+
+.field-textarea {
+  display: block;
+  width: 100%;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  font-size: 28rpx;
+  color: #1C1C1E;
+  min-height: 200rpx;
+  box-sizing: border-box;
+  line-height: 1.6;
+}
+
+/* 标签 chips */
+.tag-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+  margin-top: 16rpx;
+}
+
+.tag-chip {
+  padding: 8rpx 20rpx;
+  background: rgba(99,102,241,0.1);
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  color: #6366F1;
+}
+
+/* 状态选择 */
+.status-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16rpx;
+}
+
+.status-option {
+  padding: 12rpx 28rpx;
+  border-radius: 20rpx;
+  background: rgba(0,0,0,0.05);
+}
+
+.status-option-text {
+  font-size: 26rpx;
+  font-weight: 500;
+}
+
+/* 保存按钮 */
+.save-btn {
+  margin-top: 60rpx;
+  background: #1C1C1E;
+  border-radius: 24rpx;
+  padding: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.save-text {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #fff;
+}
