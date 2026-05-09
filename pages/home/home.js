@@ -274,6 +274,20 @@ Page({
     wx.navigateTo({ url: '/subpackages/timecapsule/pages/map/map' });
   },
 
+  showContact() {
+    wx.showModal({
+      title: '联系开发者',
+      content: '有任何想法或建议，欢迎发邮件告诉我 ☺\n\n869734632@qq.com',
+      confirmText: '复制邮箱',
+      cancelText: '关闭',
+      success(res) {
+        if (res.confirm) {
+          wx.setClipboardData({ data: '869734632@qq.com' });
+        }
+      },
+    });
+  },
+
   goFlash() {
     wx.navigateTo({ url: '/subpackages/flash/pages/index/index' });
   },

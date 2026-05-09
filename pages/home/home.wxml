@@ -120,7 +120,7 @@
 
     <!-- ── 即将推出 ── -->
     <text class="section-label" style="color:{{t.sectionLabel}}">即将推出</text>
-    <view class="coming-row" style="background:{{t.comingBg}}; border-color:{{t.comingBorderColor}}">
+    <view class="coming-row" style="background:{{t.comingBg}}; border-color:{{t.comingBorderColor}}" bindtap="showContact">
       <view class="icon-coming" style="background:{{t.iconComingBg}}">
         <text class="icon-coming-plus" style="color:{{t.iconComingPlus}}">+</text>
       </view>
