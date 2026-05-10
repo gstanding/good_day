@@ -19,6 +19,14 @@
         "pages/player/player",
         "pages/plog/plog"
       ]
+    },
+    {
+      "root": "subpackages/flash",
+      "pages": [
+        "pages/index/index",
+        "pages/edit/edit",
+        "pages/detail/detail"
+      ]
     }
   ],
   "window": {

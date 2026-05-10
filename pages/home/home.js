@@ -97,6 +97,8 @@ Page({
     capMeta: '',
     oaLoaded: false,
     oaUsername: '',
+    flashMeta: '',
+    flashCard: null,
   },
 
   onShow() {
@@ -124,6 +126,7 @@ Page({
   _loadStats() {
     this._loadAnniversary();
     this._loadCapsule();
+    this._loadFlash();
   },
 
   _loadAnniversary() {
@@ -213,6 +216,34 @@ Page({
     }
   },
 
+  _loadFlash() {
+    try {
+      const FLASH_KEY = 'FLASH_CARDS';
+      const DAILY_KEY = 'FLASH_DAILY_CARD';
+      const STATUS_LABELS = { new: '待跟进', in_progress: '进行中', done: '已完成', archived: '已归档' };
+      const STATUS_COLORS = { new: '#6366F1', in_progress: '#F59E0B', done: '#22C55E', archived: '#8E8E93' };
+      const all = (wx.getStorageSync(FLASH_KEY) || []).filter(c => c.status !== 'archived');
+      this.setData({ flashMeta: all.length > 0 ? `${all.length} 条灵感` : '' });
+      if (!all.length) { this.setData({ flashCard: null }); return; }
+      const today = new Date().toDateString();
+      const saved = wx.getStorageSync(DAILY_KEY) || {};
+      let card = saved.date === today ? all.find(c => c.id === saved.id) : null;
+      if (!card) {
+        card = all[Math.floor(Math.random() * all.length)];
+        wx.setStorageSync(DAILY_KEY, { date: today, id: card.id });
+      }
+      this.setData({
+        flashCard: {
+          ...card,
+          statusLabel: STATUS_LABELS[card.status] || '',
+          statusColor: STATUS_COLORS[card.status] || '#8E8E93',
+        },
+      });
+    } catch (e) {
+      this.setData({ flashMeta: '', flashCard: null });
+    }
+  },
+
   // ── 主题 ──────────────────────────────────────────
 
   openPicker() {
@@ -249,4 +280,28 @@ Page({
 
   onOALoad() { this.setData({ oaLoaded: true }); },
   onOAError() {},
+
+  showContact() {
+    wx.showModal({
+      title: '联系开发者',
+      content: '有任何想法或建议，欢迎发邮件告诉我 ☺\n\n869734632@qq.com',
+      confirmText: '复制邮箱',
+      cancelText: '关闭',
+      success(res) {
+        if (res.confirm) {
+          wx.setClipboardData({ data: '869734632@qq.com' });
+        }
+      },
+    });
+  },
+
+  goFlash() {
+    wx.navigateTo({ url: '/subpackages/flash/pages/index/index' });
+  },
+
+  goFlashCard() {
+    if (this.data.flashCard) {
+      wx.navigateTo({ url: `/subpackages/flash/pages/detail/detail?id=${this.data.flashCard.id}` });
+    }
+  },
 });

@@ -49,6 +49,22 @@
       </view>
     </view>
 
+    <!-- ── 今日灵感 widget ── -->
+    <view wx:if="{{flashCard}}" class="flash-widget" bindtap="goFlashCard"
+          style="background:{{t.card}}; box-shadow:{{t.cardShadow}}; border:{{t.cardBorder}}">
+      <view class="flash-widget-header">
+        <text class="flash-widget-eyebrow" style="color:{{t.sectionLabel}}">今日灵感</text>
+        <view class="flash-status-badge flash-status-{{flashCard.status}}">
+          <text class="flash-status-text" style="color:{{flashCard.statusColor}}">{{flashCard.statusLabel}}</text>
+        </view>
+      </view>
+      <text class="flash-widget-title" style="color:{{t.text}}">{{flashCard.title}}</text>
+      <text wx:if="{{flashCard.content}}" class="flash-widget-content" style="color:{{t.textMuted}}">{{flashCard.content}}</text>
+      <view wx:if="{{flashCard.tags.length}}" class="flash-tags">
+        <text wx:for="{{flashCard.tags}}" wx:key="*this" class="flash-tag" style="color:{{t.textDim}}"># {{item}}</text>
+      </view>
+    </view>
+
     <!-- ── 常用工具 ── -->
     <text class="section-label" style="color:{{t.sectionLabel}}">常用工具</text>
     <view class="tools-group" style="background:{{t.card}}; box-shadow:{{t.cardShadow}}; border:{{t.cardBorder}}">
@@ -84,6 +100,22 @@
         <view class="chevron" style="border-color:{{t.chevron}}"></view>
       </view>
 
+      <view class="divider" style="background:{{t.divider}}"></view>
+
+      <view class="tool-row" bindtap="goFlash">
+        <view class="icon-flash">
+          <text class="icon-flash-emoji">⚡</text>
+        </view>
+        <view class="tool-info">
+          <view class="tool-name-row">
+            <text class="tool-name" style="color:{{t.text}}">闪念胶囊</text>
+            <text wx:if="{{flashMeta}}" class="tool-meta" style="color:{{t.textDim}}">{{flashMeta}}</text>
+          </view>
+          <text class="tool-desc" style="color:{{t.textMuted}}">捕捉灵感，跟踪想法的成长</text>
+        </view>
+        <view class="chevron" style="border-color:{{t.chevron}}"></view>
+      </view>
+
     </view>
 
     <!-- ── 社区动态 ── -->
@@ -98,7 +130,7 @@
 
     <!-- ── 即将推出 ── -->
     <text class="section-label" style="color:{{t.sectionLabel}}">即将推出</text>
-    <view class="coming-row" style="background:{{t.comingBg}}; border-color:{{t.comingBorderColor}}">
+    <view class="coming-row" style="background:{{t.comingBg}}; border-color:{{t.comingBorderColor}}" bindtap="showContact">
       <view class="icon-coming" style="background:{{t.iconComingBg}}">
         <text class="icon-coming-plus" style="color:{{t.iconComingPlus}}">+</text>
       </view>

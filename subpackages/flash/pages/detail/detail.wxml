@@ -1,0 +1,58 @@
+<!--subpackages/flash/pages/detail/detail.wxml-->
+<view wx:if="{{card}}" class="container">
+  <scroll-view class="content-area" scroll-y>
+
+    <!-- 标题区 -->
+    <view class="hero-section">
+      <view class="status-badge status-badge-{{card.status}}">
+        <text class="status-badge-text" style="color:{{card.statusColor}}">{{card.statusLabel}}</text>
+      </view>
+      <text class="hero-title">{{card.title}}</text>
+      <text wx:if="{{card.content}}" class="hero-content">{{card.content}}</text>
+    </view>
+
+    <!-- 标签 -->
+    <view wx:if="{{card.tags.length}}" class="tags-section">
+      <text wx:for="{{card.tags}}" wx:key="*this" class="tag"># {{item}}</text>
+    </view>
+
+    <!-- 时间信息 -->
+    <view class="meta-section">
+      <view class="meta-row">
+        <text class="meta-label">创建于</text>
+        <text class="meta-value">{{createdStr}}</text>
+      </view>
+      <view class="meta-row">
+        <text class="meta-label">更新于</text>
+        <text class="meta-value">{{updatedStr}}</text>
+      </view>
+    </view>
+
+    <!-- 状态更新 -->
+    <view class="status-section">
+      <text class="section-title">跟进状态</text>
+      <view class="status-options">
+        <view wx:for="{{statusOptions}}" wx:key="value"
+              class="status-option {{card.status === item.value ? 'status-option-active' : ''}}"
+              style="{{card.status === item.value ? 'background:' + item.color + ';' : ''}}"
+              bindtap="setStatus" data-status="{{item.value}}">
+          <text class="status-option-text"
+                style="color:{{card.status === item.value ? '#fff' : '#3C3C43'}}">
+            {{item.label}}
+          </text>
+        </view>
+      </view>
+    </view>
+
+  </scroll-view>
+
+  <!-- 底部操作栏 -->
+  <view class="action-bar">
+    <view class="action-btn action-edit" bindtap="goEdit">
+      <text class="action-text">编辑</text>
+    </view>
+    <view class="action-btn action-delete" bindtap="deleteCard">
+      <text class="action-text action-delete-text">删除</text>
+    </view>
+  </view>
+</view>
