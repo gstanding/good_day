@@ -134,9 +134,10 @@ page { background: #F4F4F6; }
 .field-input {
   display: block;
   width: 100%;
+  height: 92rpx;
   background: #fff;
   border-radius: 20rpx;
-  padding: 24rpx;
+  padding: 0 24rpx;
   font-size: 30rpx;
   color: #1C1C1E;
   box-sizing: border-box;
@@ -252,12 +253,14 @@ page { background: #F4F4F6; }
 }
 
 .api-input {
+  display: block;
   background: #F4F4F6;
   border-radius: 16rpx;
-  padding: 24rpx;
+  width: 100%;
+  height: 88rpx;
+  padding: 0 24rpx;
   font-size: 26rpx;
   color: #1C1C1E;
-  width: 100%;
   box-sizing: border-box;
   margin-bottom: 32rpx;
 }
