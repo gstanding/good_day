@@ -1,104 +1,185 @@
 /* subpackages/flash/pages/edit/edit.wxss */
-page { background: #F2F2F7; }
+page { background: #F4F4F6; }
 
-.container { height: 100vh; }
+.container { height: 100vh; position: relative; }
 
-.form {
+/* ── input page ── */
+.input-page {
+  padding: 32rpx;
+  display: flex;
+  flex-direction: column;
   height: 100%;
-  padding: 24rpx 32rpx 80rpx;
   box-sizing: border-box;
 }
 
-/* 统一表单卡片 */
-.form-card {
+.main-textarea {
+  flex: 1;
+  min-height: 400rpx;
   background: #fff;
+  border-radius: 28rpx;
+  padding: 36rpx;
+  font-size: 32rpx;
+  line-height: 1.7;
+  color: #1C1C1E;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.input-actions {
+  display: flex;
+  gap: 20rpx;
+  margin-top: 28rpx;
+}
+
+.btn-ai {
+  flex: 2;
+  background: #1C1C1E;
   border-radius: 24rpx;
-  overflow: hidden;
-  box-shadow: 0 2rpx 16rpx rgba(0,0,0,0.06);
+  padding: 30rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.form-section {
-  padding: 28rpx 32rpx 24rpx;
+.btn-ai-text {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 1rpx;
 }
 
-.form-section + .form-section {
-  border-top: 1rpx solid #F2F2F7;
+.btn-skip {
+  flex: 1;
+  background: rgba(0,0,0,0.06);
+  border-radius: 24rpx;
+  padding: 30rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.field-label {
+.btn-skip-text {
+  font-size: 26rpx;
+  color: #3C3C43;
+}
+
+/* ── loading page ── */
+.loading-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 24rpx;
+}
+
+.loading-emoji {
+  font-size: 88rpx;
+}
+
+.loading-text {
+  font-size: 30rpx;
+  color: #8E8E93;
+}
+
+/* ── preview page ── */
+.preview-page {
+  height: 100%;
+  padding: 32rpx 32rpx 80rpx;
+  box-sizing: border-box;
+}
+
+.raw-card {
+  background: rgba(0,0,0,0.03);
+  border-radius: 20rpx;
+  padding: 24rpx 28rpx;
+  margin-bottom: 4rpx;
+  position: relative;
+}
+
+.raw-label {
   display: block;
   font-size: 20rpx;
+  color: #C7C7CC;
+  margin-bottom: 8rpx;
+}
+
+.raw-text {
+  display: block;
+  font-size: 26rpx;
+  color: #8E8E93;
+  line-height: 1.6;
+  padding-right: 80rpx;
+}
+
+.raw-edit {
+  position: absolute;
+  top: 24rpx;
+  right: 28rpx;
+  font-size: 24rpx;
+  color: #6366F1;
+}
+
+/* shared field styles */
+.field-label {
+  display: block;
+  font-size: 22rpx;
   font-weight: 600;
   color: #8E8E93;
-  letter-spacing: 1.5rpx;
-  text-transform: uppercase;
-  margin-bottom: 14rpx;
+  letter-spacing: 1rpx;
+  margin-top: 32rpx;
+  margin-bottom: 12rpx;
 }
 
 .field-input {
   display: block;
   width: 100%;
-  font-size: 32rpx;
-  font-weight: 500;
-  color: #1C1C1E;
-  box-sizing: border-box;
-  line-height: 1.4;
-}
-
-.field-textarea {
-  display: block;
-  width: 100%;
-  font-size: 28rpx;
-  color: #1C1C1E;
-  min-height: 180rpx;
-  box-sizing: border-box;
-  line-height: 1.7;
-}
-
-/* 标签输入 */
-.field-input-tags {
-  display: block;
-  width: 100%;
-  font-size: 28rpx;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 24rpx;
+  font-size: 30rpx;
   color: #1C1C1E;
   box-sizing: border-box;
 }
 
-/* 标签 chips */
-.tag-chips {
+/* tags row */
+.tags-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 12rpx;
-  margin-top: 20rpx;
+  gap: 14rpx;
+  align-items: center;
 }
 
 .tag-chip {
-  padding: 8rpx 20rpx;
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
   background: rgba(99,102,241,0.1);
   border-radius: 20rpx;
+  padding: 10rpx 18rpx;
+}
+
+.tag-text {
   font-size: 24rpx;
   color: #6366F1;
-  font-weight: 500;
 }
 
-/* 状态选择（仅编辑模式） */
-.status-card {
-  background: #fff;
-  border-radius: 24rpx;
-  padding: 28rpx 32rpx;
-  margin-top: 20rpx;
-  box-shadow: 0 2rpx 16rpx rgba(0,0,0,0.06);
+.tag-remove {
+  font-size: 30rpx;
+  color: #6366F1;
+  line-height: 1;
 }
 
-.status-label {
-  display: block;
-  font-size: 20rpx;
-  font-weight: 600;
-  color: #8E8E93;
-  letter-spacing: 1.5rpx;
-  margin-bottom: 20rpx;
+.tag-add-input {
+  background: rgba(0,0,0,0.04);
+  border-radius: 20rpx;
+  padding: 10rpx 20rpx;
+  font-size: 24rpx;
+  color: #1C1C1E;
+  min-width: 120rpx;
 }
 
+/* status options */
 .status-options {
   display: flex;
   flex-wrap: wrap;
@@ -116,21 +197,101 @@ page { background: #F2F2F7; }
   font-weight: 500;
 }
 
-/* 保存按钮 */
+/* save button */
 .save-btn {
-  margin-top: 48rpx;
+  margin-top: 60rpx;
   background: #1C1C1E;
   border-radius: 24rpx;
-  padding: 34rpx;
+  padding: 32rpx;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4rpx 24rpx rgba(0,0,0,0.18);
 }
 
 .save-text {
   font-size: 32rpx;
   font-weight: 600;
   color: #fff;
-  letter-spacing: 2rpx;
+}
+
+/* ── API Key mask ── */
+.api-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 200;
+}
+
+.api-card {
+  background: #fff;
+  border-radius: 28rpx;
+  padding: 48rpx 40rpx;
+  width: 600rpx;
+  box-sizing: border-box;
+}
+
+.api-title {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #1C1C1E;
+  margin-bottom: 12rpx;
+}
+
+.api-hint {
+  display: block;
+  font-size: 24rpx;
+  color: #8E8E93;
+  margin-bottom: 32rpx;
+}
+
+.api-input {
+  background: #F4F4F6;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  font-size: 26rpx;
+  color: #1C1C1E;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 32rpx;
+}
+
+.api-actions {
+  display: flex;
+  gap: 20rpx;
+}
+
+.api-cancel {
+  flex: 1;
+  background: rgba(0,0,0,0.06);
+  border-radius: 16rpx;
+  padding: 24rpx;
+  display: flex;
+  justify-content: center;
+}
+
+.api-confirm {
+  flex: 2;
+  background: #1C1C1E;
+  border-radius: 16rpx;
+  padding: 24rpx;
+  display: flex;
+  justify-content: center;
+}
+
+.api-cancel-text {
+  font-size: 28rpx;
+  color: #3C3C43;
+}
+
+.api-confirm-text {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #fff;
 }
