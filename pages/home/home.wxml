@@ -5,7 +5,7 @@
     <!-- ── Header ── -->
     <view class="header-row">
       <view>
-        <text class="title" style="color:{{t.text}}; font-weight:{{t.dark?800:700}}">工具集</text>
+        <text class="title" style="color:{{t.text}}; font-weight:{{t.dark?800:700}}">Kintsu</text>
         <text class="subtitle" style="color:{{t.textMuted}}">{{t.subtitle}}</text>
       </view>
       <view class="theme-btn" style="background:{{t.btnBg}}; border-color:{{t.btnBorder}}" bindtap="openPicker">
@@ -41,9 +41,9 @@
           </view>
         </block>
         <block wx:else>
-          <text class="hero-title" style="color:{{annImagePath ? '#fff' : t.heroText}}">去记录一个重要时刻</text>
+          <text class="hero-title" style="color:{{annImagePath ? '#fff' : t.heroText}}">留下你的第一个重要时刻</text>
           <view class="hero-count-row">
-            <text class="hero-empty" style="color:{{annImagePath ? 'rgba(255,255,255,0.8)' : t.heroMuted}}">点击进入纪念日 →</text>
+            <text class="hero-empty" style="color:{{annImagePath ? 'rgba(255,255,255,0.8)' : t.heroMuted}}">去添加纪念日 →</text>
           </view>
         </block>
       </view>
@@ -65,8 +65,8 @@
       </view>
     </view>
 
-    <!-- ── 常用工具 ── -->
-    <text class="section-label" style="color:{{t.sectionLabel}}">常用工具</text>
+    <!-- ── 开始记录 ── -->
+    <text class="section-label" style="color:{{t.sectionLabel}}">开始记录</text>
     <view class="tools-group" style="background:{{t.card}}; box-shadow:{{t.cardShadow}}; border:{{t.cardBorder}}">
 
       <view class="tool-row" bindtap="goAnniversary">
@@ -79,7 +79,7 @@
             <text class="tool-name" style="color:{{t.text}}">纪念日</text>
             <text wx:if="{{annMeta}}" class="tool-meta" style="color:{{t.textDim}}">{{annMeta}}</text>
           </view>
-          <text class="tool-desc" style="color:{{t.textMuted}}">记录重要时刻，倒数美好未来</text>
+          <text class="tool-desc" style="color:{{t.textMuted}}">让重要的日子被郑重对待</text>
         </view>
         <view class="chevron" style="border-color:{{t.chevron}}"></view>
       </view>
@@ -95,7 +95,7 @@
             <text class="tool-name" style="color:{{t.text}}">声音胶囊</text>
             <text wx:if="{{capMeta}}" class="tool-meta" style="color:{{t.textDim}}">{{capMeta}}</text>
           </view>
-          <text class="tool-desc" style="color:{{t.textMuted}}">在时空里埋下你的声音</text>
+          <text class="tool-desc" style="color:{{t.textMuted}}">把声音藏进时间的褶皱里</text>
         </view>
         <view class="chevron" style="border-color:{{t.chevron}}"></view>
       </view>
@@ -111,7 +111,7 @@
             <text class="tool-name" style="color:{{t.text}}">闪念胶囊</text>
             <text wx:if="{{flashMeta}}" class="tool-meta" style="color:{{t.textDim}}">{{flashMeta}}</text>
           </view>
-          <text class="tool-desc" style="color:{{t.textMuted}}">捕捉灵感，跟踪想法的成长</text>
+          <text class="tool-desc" style="color:{{t.textMuted}}">转瞬即逝的念头，值得被留住</text>
         </view>
         <view class="chevron" style="border-color:{{t.chevron}}"></view>
       </view>
@@ -135,8 +135,8 @@
         <text class="icon-coming-plus" style="color:{{t.iconComingPlus}}">+</text>
       </view>
       <view class="tool-info">
-        <text class="tool-name" style="color:{{t.textMuted}}; font-weight:600">更多工具开发中</text>
-        <text class="tool-desc" style="color:{{t.textDim}}">有想法？留言告诉我</text>
+        <text class="tool-name" style="color:{{t.textMuted}}; font-weight:600">有新功能在路上</text>
+        <text class="tool-desc" style="color:{{t.textDim}}">有想法？来告诉我</text>
       </view>
     </view>
 

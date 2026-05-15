@@ -1,72 +1,60 @@
+<!--subpackages/flash/pages/edit/edit.wxml-->
 <view class="container">
+  <scroll-view class="form" scroll-y>
 
-  <!-- Step: input -->
-  <view wx:if="{{step === 'input'}}" class="input-page">
-    <textarea class="main-textarea"
-              placeholder="随手记下这个想法..."
-              placeholder-style="color:#C7C7CC"
-              value="{{rawInput}}"
-              bindinput="onRawInput"
-              auto-focus
-              auto-height />
-    <view class="input-actions">
-      <view class="btn-ai" bindtap="aiOrganize">
-        <text class="btn-ai-text">✨  AI 整理</text>
+    <!-- 主表单卡片 -->
+    <view class="form-card">
+
+      <!-- 标题 -->
+      <view class="form-section">
+        <text class="field-label">标题</text>
+        <input class="field-input"
+               placeholder="一句话概括这个想法"
+               placeholder-style="color:#C7C7CC;font-size:32rpx;font-weight:400;"
+               value="{{title}}"
+               bindinput="onTitleInput"
+               maxlength="60" />
       </view>
-      <view class="btn-skip" bindtap="quickSave">
-        <text class="btn-skip-text">直接保存</text>
+
+      <!-- 内容 -->
+      <view class="form-section">
+        <text class="field-label">详细内容（可选）</text>
+        <textarea class="field-textarea"
+                  placeholder="展开写写..."
+                  placeholder-style="color:#C7C7CC;font-size:28rpx;"
+                  value="{{content}}"
+                  bindinput="onContentInput"
+                  auto-height />
       </view>
-    </view>
-  </view>
 
-  <!-- Step: loading -->
-  <view wx:if="{{step === 'loading'}}" class="loading-page">
-    <text class="loading-emoji">✨</text>
-    <text class="loading-text">AI 正在整理...</text>
-  </view>
-
-  <!-- Step: preview -->
-  <scroll-view wx:if="{{step === 'preview'}}" class="preview-page" scroll-y>
-
-    <view class="raw-card">
-      <text class="raw-label">原始内容</text>
-      <text class="raw-text">{{rawInput}}</text>
-      <text class="raw-edit" bindtap="backToInput">修改 ›</text>
-    </view>
-
-    <text class="field-label">标题</text>
-    <input class="field-input"
-           value="{{title}}"
-           bindinput="onTitleInput"
-           placeholder="请输入标题"
-           placeholder-style="color:#C7C7CC"
-           maxlength="60" />
-
-    <text class="field-label">标签</text>
-    <view class="tags-row">
-      <view wx:for="{{tags}}" wx:key="*this" class="tag-chip">
-        <text class="tag-text"># {{item}}</text>
-        <text class="tag-remove" bindtap="removeTag" data-index="{{index}}">×</text>
+      <!-- 标签 -->
+      <view class="form-section">
+        <text class="field-label">标签（可选，逗号分隔，最多 5 个）</text>
+        <input class="field-input-tags"
+               placeholder="例：产品，设计，读书"
+               placeholder-style="color:#C7C7CC;font-size:28rpx;"
+               value="{{tagsRaw}}"
+               bindinput="onTagInput" />
+        <view wx:if="{{tags.length}}" class="tag-chips">
+          <text wx:for="{{tags}}" wx:key="*this" class="tag-chip"># {{item}}</text>
+        </view>
       </view>
-      <input wx:if="{{tags.length < 5}}"
-             class="tag-add-input"
-             value="{{tagInput}}"
-             placeholder="+ 添加"
-             placeholder-style="color:#C7C7CC"
-             bindinput="onTagInputChange"
-             bindconfirm="onTagInputConfirm" />
+
     </view>
 
+    <!-- 状态（仅编辑模式） -->
     <block wx:if="{{isEdit}}">
-      <text class="field-label">状态</text>
-      <view class="status-options">
-        <view wx:for="{{statusOptions}}" wx:key="value"
-              class="status-option {{status === item.value ? 'status-option-active' : ''}}"
-              style="{{status === item.value ? 'background:' + item.color + ';' : ''}}"
-              bindtap="onStatusSelect" data-status="{{item.value}}">
-          <text class="status-option-text" style="color:{{status === item.value ? '#fff' : '#3C3C43'}}">
-            {{item.label}}
-          </text>
+      <view class="status-card">
+        <text class="status-label">状态</text>
+        <view class="status-options">
+          <view wx:for="{{statusOptions}}" wx:key="value"
+                class="status-option {{status === item.value ? 'status-option-active' : ''}}"
+                style="{{status === item.value ? 'background:' + item.color + ';' : ''}}"
+                bindtap="onStatusSelect" data-status="{{item.value}}">
+            <text class="status-option-text" style="color:{{status === item.value ? '#fff' : '#3C3C43'}}">
+              {{item.label}}
+            </text>
+          </view>
         </view>
       </view>
     </block>
@@ -76,27 +64,4 @@
     </view>
 
   </scroll-view>
-
-  <!-- API Key 设置遮罩 -->
-  <view wx:if="{{apiKeyVisible}}" class="api-mask">
-    <view class="api-card">
-      <text class="api-title">设置 DeepSeek API Key</text>
-      <text class="api-hint">在 platform.deepseek.com 申请后填入</text>
-      <input class="api-input"
-             value="{{apiKeyInput}}"
-             bindinput="onApiKeyInput"
-             placeholder="sk-..."
-             placeholder-style="color:#C7C7CC"
-             password />
-      <view class="api-actions">
-        <view class="api-cancel" bindtap="cancelApiKey">
-          <text class="api-cancel-text">取消</text>
-        </view>
-        <view class="api-confirm" bindtap="saveApiKey">
-          <text class="api-confirm-text">保存</text>
-        </view>
-      </view>
-    </view>
-  </view>
-
 </view>
