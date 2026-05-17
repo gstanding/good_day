@@ -71,10 +71,9 @@ Page({
   },
 
   async _callAI(rawInput) {
-    const model = wx.cloud.extend.AI.createModel('deepseek');
-    const res = await model.streamText({
+    const res = await wx.cloud.extend.AI.createModel('hunyuan-v3').streamText({
       data: {
-        model: 'deepseek-v3',
+        model: 'hy3-preview',
         messages: [
           {
             role: 'system',
@@ -85,8 +84,11 @@ Page({
       },
     });
     let fullText = '';
-    for await (const chunk of res.textStream) {
-      fullText += chunk;
+    for await (const event of res.eventStream) {
+      if (event.data === '[DONE]') break;
+      const data = JSON.parse(event.data);
+      const text = data?.choices?.[0]?.delta?.content;
+      if (text) fullText += text;
     }
     // 清理模型可能输出的 markdown 代码块包裹
     const clean = fullText.replace(/```json\n?|\n?```/g, '').trim();
