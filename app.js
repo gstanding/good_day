@@ -1,5 +1,6 @@
 App({
   onLaunch() {
+    wx.cloud.init({ env: 'prod-xxxxx', traceUser: true });
     // Check local storage for theme
     const theme = wx.getStorageSync('theme') || { color: '#ff4d4f' };
     this.globalData = {

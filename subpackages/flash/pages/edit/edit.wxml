@@ -77,26 +77,4 @@
 
   </scroll-view>
 
-  <!-- API Key 设置遮罩 -->
-  <view wx:if="{{apiKeyVisible}}" class="api-mask">
-    <view class="api-card">
-      <text class="api-title">设置 DeepSeek API Key</text>
-      <text class="api-hint">在 platform.deepseek.com 申请后填入</text>
-      <input class="api-input"
-             value="{{apiKeyInput}}"
-             bindinput="onApiKeyInput"
-             placeholder="sk-..."
-             placeholder-style="color:#C7C7CC"
-             password />
-      <view class="api-actions">
-        <view class="api-cancel" bindtap="cancelApiKey">
-          <text class="api-cancel-text">取消</text>
-        </view>
-        <view class="api-confirm" bindtap="saveApiKey">
-          <text class="api-confirm-text">保存</text>
-        </view>
-      </view>
-    </view>
-  </view>
-
 </view>
