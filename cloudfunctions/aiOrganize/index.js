@@ -46,12 +46,12 @@ exports.main = async (event) => {
           try {
             const json = JSON.parse(data);
             const text = json.choices[0].message.content.trim();
-            // M2.7 是思维链模型，需过滤 <think>...</think> 推理块
-            const clean = text
-              .replace(/<think>[\s\S]*?<\/think>/g, '')
-              .replace(/```json\n?|\n?```/g, '')
-              .trim();
-            resolve({ result: JSON.parse(clean) });
+            // 1. 过滤 <think>...</think> 推理块（M2.7 思维链模型）
+            // 2. 从剩余文本中找第一个完整 JSON 对象，兼容各种包裹格式
+            const stripped = text.replace(/<think>[\s\S]*?<\/think>/g, '');
+            const jsonMatch = stripped.match(/\{[\s\S]*\}/);
+            if (!jsonMatch) throw new Error('no json found');
+            resolve({ result: JSON.parse(jsonMatch[0]) });
           } catch (e) {
             console.error('[aiOrganize] 解析失败:', e.message);
             resolve({ error: 'parse_failed', raw: data.slice(0, 300) });
