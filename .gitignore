@@ -2,4 +2,3 @@ node_modules/
 *.key
 preview-qr.jpg
 .DS_Store
-cloudfunctions/**/config.js

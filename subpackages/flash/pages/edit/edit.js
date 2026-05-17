@@ -52,31 +52,45 @@ Page({
       return;
     }
     this.setData({ step: 'loading' });
-    wx.cloud.callFunction({
-      name: 'aiOrganize',
-      data: { rawInput: rawInput.trim() },
-      success: (res) => {
-        const { result, error } = res.result || {};
-        if (error || !result) {
-          wx.showToast({ title: 'AI 整理失败，请手动填写', icon: 'none' });
-          this.setData({
-            step: 'preview',
-            title: rawInput.trim().split('\n')[0].slice(0, 30),
-            tags: [],
-          });
-          return;
-        }
+    this._callAI(rawInput.trim())
+      .then((result) => {
         this.setData({
           step: 'preview',
           title: result.title || '',
           tags: (result.tags || []).slice(0, 5),
         });
-      },
-      fail: () => {
-        wx.showToast({ title: '网络请求失败', icon: 'none' });
-        this.setData({ step: 'input' });
+      })
+      .catch(() => {
+        wx.showToast({ title: 'AI 整理失败，请手动填写', icon: 'none' });
+        this.setData({
+          step: 'preview',
+          title: rawInput.trim().split('\n')[0].slice(0, 30),
+          tags: [],
+        });
+      });
+  },
+
+  async _callAI(rawInput) {
+    const model = wx.cloud.extend.AI.createModel('deepseek');
+    const res = await model.streamText({
+      data: {
+        model: 'deepseek-v3',
+        messages: [
+          {
+            role: 'system',
+            content: '你是一个帮助整理灵感笔记的助手。根据用户输入内容，提取一个简洁标题（不超过20字）和2-4个相关标签（每个2-6字）。只返回JSON，格式：{"title":"...","tags":["...","..."]}，不要其他任何内容。',
+          },
+          { role: 'user', content: rawInput },
+        ],
       },
     });
+    let fullText = '';
+    for await (const chunk of res.textStream) {
+      fullText += chunk;
+    }
+    // 清理模型可能输出的 markdown 代码块包裹
+    const clean = fullText.replace(/```json\n?|\n?```/g, '').trim();
+    return JSON.parse(clean);
   },
 
   quickSave() {
