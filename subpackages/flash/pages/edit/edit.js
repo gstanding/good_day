@@ -60,8 +60,11 @@ Page({
           tags: (result.tags || []).slice(0, 5),
         });
       })
-      .catch(() => {
-        wx.showToast({ title: 'AI 整理失败，请手动填写', icon: 'none' });
+      .catch((err) => {
+        const msg = err && (err.message || '').includes('timeout')
+          ? 'AI 繁忙，稍后再试'
+          : 'AI 整理失败，请手动填写';
+        wx.showToast({ title: msg, icon: 'none', duration: 2000 });
         this.setData({
           step: 'preview',
           title: rawInput.trim().split('\n')[0].slice(0, 30),
