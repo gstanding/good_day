@@ -55,6 +55,7 @@ Page({
     wx.cloud.callFunction({
       name: 'aiOrganize',
       data: { rawInput: rawInput.trim() },
+      timeout: 25000,
       success: (res) => {
         const { result, error, code, msg, raw } = res.result || {};
         if (error || !result) {
