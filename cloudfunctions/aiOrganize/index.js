@@ -26,7 +26,7 @@ exports.main = async (event) => {
   return new Promise((resolve) => {
     const req = https.request(
       {
-        hostname: 'api.minimax.chat',
+        hostname: 'api.minimaxi.com',
         path: '/v1/chat/completions',
         method: 'POST',
         headers: {
