@@ -56,8 +56,9 @@ Page({
       name: 'aiOrganize',
       data: { rawInput: rawInput.trim() },
       success: (res) => {
-        const { result, error } = res.result || {};
+        const { result, error, code, msg, raw } = res.result || {};
         if (error || !result) {
+          console.error('[aiOrganize] 云函数返回错误:', error, code, msg, raw);
           wx.showToast({ title: 'AI 整理失败，请手动填写', icon: 'none' });
           this.setData({
             step: 'preview',

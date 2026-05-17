@@ -23,6 +23,8 @@ exports.main = async (event) => {
     temperature: 0.3,
   });
 
+  console.log('[aiOrganize] 请求开始, input:', rawInput.slice(0, 30));
+
   return new Promise((resolve) => {
     const req = https.request(
       {
@@ -36,21 +38,32 @@ exports.main = async (event) => {
         },
       },
       (res) => {
+        console.log('[aiOrganize] HTTP 状态码:', res.statusCode);
         let data = '';
         res.on('data', (chunk) => { data += chunk; });
         res.on('end', () => {
+          console.log('[aiOrganize] 响应体:', data.slice(0, 200));
           try {
             const json = JSON.parse(data);
             const text = json.choices[0].message.content.trim();
             const clean = text.replace(/```json\n?|\n?```/g, '').trim();
             resolve({ result: JSON.parse(clean) });
           } catch (e) {
-            resolve({ error: 'parse_failed', raw: data });
+            console.error('[aiOrganize] 解析失败:', e.message);
+            resolve({ error: 'parse_failed', raw: data.slice(0, 300) });
           }
         });
       }
     );
-    req.on('error', (e) => resolve({ error: 'network_failed', msg: e.message }));
+    req.on('error', (e) => {
+      console.error('[aiOrganize] 网络错误:', e.code, e.message);
+      resolve({ error: 'network_failed', code: e.code, msg: e.message });
+    });
+    req.setTimeout(15000, () => {
+      console.error('[aiOrganize] 请求超时');
+      req.destroy();
+      resolve({ error: 'timeout' });
+    });
     req.write(body);
     req.end();
   });
