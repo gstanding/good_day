@@ -71,7 +71,7 @@ Page({
   },
 
   async _callAI(rawInput) {
-    const res = await wx.cloud.extend.AI.createModel('hunyuan-v3').streamText({
+    const res = await wx.cloud.extend.AI.createModel('cloudbase').streamText({
       data: {
         model: 'hy3-preview',
         messages: [
