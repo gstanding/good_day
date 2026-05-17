@@ -46,7 +46,11 @@ exports.main = async (event) => {
           try {
             const json = JSON.parse(data);
             const text = json.choices[0].message.content.trim();
-            const clean = text.replace(/```json\n?|\n?```/g, '').trim();
+            // M2.7 是思维链模型，需过滤 <think>...</think> 推理块
+            const clean = text
+              .replace(/<think>[\s\S]*?<\/think>/g, '')
+              .replace(/```json\n?|\n?```/g, '')
+              .trim();
             resolve({ result: JSON.parse(clean) });
           } catch (e) {
             console.error('[aiOrganize] 解析失败:', e.message);
