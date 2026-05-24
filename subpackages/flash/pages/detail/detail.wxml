@@ -1,58 +1,99 @@
 <!--subpackages/flash/pages/detail/detail.wxml-->
-<view wx:if="{{card}}" class="container">
-  <scroll-view class="content-area" scroll-y>
+<view wx:if="{{card}}" class="page">
 
-    <!-- 标题区 -->
-    <view class="hero-section">
-      <view class="status-badge status-badge-{{card.status}}">
-        <text class="status-badge-text" style="color:{{card.statusColor}}">{{card.statusLabel}}</text>
+  <!-- status bar spacer -->
+  <view style="height:{{statusBarH}}px; flex-shrink:0;"></view>
+
+  <!-- top bar -->
+  <view class="detail-topbar">
+    <view class="topbar-btn" bindtap="goBack">
+      <text class="topbar-back-icon">‹</text>
+    </view>
+    <view class="topbar-btn" bindtap="showMoreMenu">
+      <text class="topbar-more-icon">···</text>
+    </view>
+  </view>
+
+  <!-- scrollable content -->
+  <scroll-view class="detail-scroll" scroll-y>
+
+    <!-- status pill banner -->
+    <view class="status-pill-banner" style="background:{{card.statusSoft}}">
+      <view class="spb-dot" style="background:{{card.statusDot}}"></view>
+      <text class="spb-text" style="color:{{card.statusInk}}">
+        {{card.statusLabel}} · 第 {{card.daysSince}} 天
+      </text>
+    </view>
+
+    <!-- title -->
+    <text class="detail-title">{{card.title}}</text>
+
+    <!-- content -->
+    <text wx:if="{{card.content}}" class="detail-content">{{card.content}}</text>
+
+    <!-- tags -->
+    <view wx:if="{{card.tags.length}}" class="detail-tags">
+      <view wx:for="{{card.tags}}" wx:key="*this"
+            class="detail-tag" style="background:{{card.statusSoft}}">
+        <text class="detail-tag-text" style="color:{{card.statusInk}}">#{{item}}</text>
       </view>
-      <text class="hero-title">{{card.title}}</text>
-      <text wx:if="{{card.content}}" class="hero-content">{{card.content}}</text>
     </view>
 
-    <!-- 标签 -->
-    <view wx:if="{{card.tags.length}}" class="tags-section">
-      <text wx:for="{{card.tags}}" wx:key="*this" class="tag"># {{item}}</text>
+    <!-- lifecycle ribbon (not shown for archived) -->
+    <view wx:if="{{card.status !== 'archived'}}" class="lifecycle-card">
+      <view class="lifecycle-header">
+        <text class="lifecycle-title-text">胶囊状态</text>
+        <text class="lifecycle-sub-text">从想法到落地</text>
+      </view>
+
+      <!-- track + nodes -->
+      <view class="ribbon-wrap">
+        <view class="ribbon-bg-line"></view>
+        <view class="ribbon-fill-line" style="width:{{ribbonFillStyle}};background:{{card.statusDot}}"></view>
+        <view class="ribbon-nodes">
+          <view wx:for="{{lifecycleStages}}" wx:key="key" wx:for-item="stage"
+                class="ribbon-node-col">
+            <view class="ribbon-node-circle {{stage.isCurrent?'ribbon-node-current':''}}"
+                  style="background:{{stage.reached?stage.dot:'#fff'}};border-color:{{stage.reached?stage.dot:'rgba(60,40,16,0.12)'}};box-shadow:{{stage.isCurrent?'0 0 0 10rpx '+stage.soft:'none'}}">
+              <text wx:if="{{stage.reached && !stage.isCurrent}}" class="ribbon-check">✓</text>
+              <view wx:if="{{stage.isCurrent}}" class="ribbon-current-dot"></view>
+            </view>
+            <text class="ribbon-node-label" style="color:{{stage.reached?'#2B241B':'#897C6C'}}">{{stage.label}}</text>
+            <text class="ribbon-node-desc" style="color:{{stage.isCurrent?stage.ink:'#B5A993'}}">{{stage.desc}}</text>
+          </view>
+        </view>
+      </view>
+
+      <!-- advance CTA -->
+      <view class="lifecycle-cta" bindtap="advanceStatus">
+        <text class="lifecycle-cta-label">{{lifecycleCta}}</text>
+        <text class="lifecycle-cta-btn" style="color:{{card.statusInk}}">{{lifecycleCtaBtn}}</text>
+      </view>
     </view>
 
-    <!-- 时间信息 -->
-    <view class="meta-section">
-      <view class="meta-row">
-        <text class="meta-label">创建于</text>
+    <!-- metadata row -->
+    <view class="meta-row">
+      <view class="meta-col">
+        <text class="meta-label">收存于</text>
         <text class="meta-value">{{createdStr}}</text>
       </view>
-      <view class="meta-row">
-        <text class="meta-label">更新于</text>
+      <view class="meta-col meta-col-right">
+        <text class="meta-label">最近更新</text>
         <text class="meta-value">{{updatedStr}}</text>
       </view>
     </view>
 
-    <!-- 状态更新 -->
-    <view class="status-section">
-      <text class="section-title">跟进状态</text>
-      <view class="status-options">
-        <view wx:for="{{statusOptions}}" wx:key="value"
-              class="status-option {{card.status === item.value ? 'status-option-active' : ''}}"
-              style="{{card.status === item.value ? 'background:' + item.color + ';' : ''}}"
-              bindtap="setStatus" data-status="{{item.value}}">
-          <text class="status-option-text"
-                style="color:{{card.status === item.value ? '#fff' : '#3C3C43'}}">
-            {{item.label}}
-          </text>
-        </view>
-      </view>
-    </view>
-
+    <view style="height:180rpx;"></view>
   </scroll-view>
 
-  <!-- 底部操作栏 -->
-  <view class="action-bar">
-    <view class="action-btn action-edit" bindtap="goEdit">
-      <text class="action-text">编辑</text>
+  <!-- bottom action bar -->
+  <view class="detail-bar">
+    <view class="detail-edit-btn" bindtap="goEdit">
+      <text class="detail-edit-text">编辑</text>
     </view>
-    <view class="action-btn action-delete" bindtap="deleteCard">
-      <text class="action-text action-delete-text">删除</text>
+    <view class="detail-more-btn" bindtap="showMoreMenu">
+      <text class="detail-more-icon">···</text>
     </view>
   </view>
+
 </view>

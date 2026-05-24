@@ -1,60 +1,93 @@
 <!--subpackages/flash/pages/index/index.wxml-->
-<view class="container">
+<view class="page">
 
-  <!-- 搜索框 -->
-  <view class="search-bar">
-    <view class="search-wrap">
-      <text class="search-icon">🔍</text>
-      <input class="search-input"
-             placeholder="搜索标题或内容"
-             placeholder-style="color:#C7C7CC"
-             value="{{query}}"
-             bindinput="onSearchInput" />
+  <!-- status bar spacer -->
+  <view style="height:{{statusBarH}}px; flex-shrink:0;"></view>
+
+  <!-- module header -->
+  <view class="module-header">
+    <view class="module-badge-row">
+      <text class="module-badge-text">FLASH · 闪念胶囊</text>
     </view>
+    <text class="header-tagline">把脑子里那些一闪而过的念头，{{'\n'}}封进一颗胶囊。</text>
+    <text class="header-meta">共 <text class="header-count">{{totalCount}}</text> 颗 · 本周新增 {{weekCount}}</text>
   </view>
 
-  <!-- 状态 tab -->
-  <scroll-view class="tab-bar" scroll-x>
-    <view wx:for="{{tabs}}" wx:key="value"
-          class="tab {{activeStatus === item.value ? 'tab-active' : ''}}"
-          bindtap="onStatusTab" data-status="{{item.value}}">
-      <text class="tab-text">{{item.label}}</text>
+  <!-- search bar -->
+  <view class="search-wrap">
+    <text class="search-icon-text">⊙</text>
+    <input class="search-input"
+           placeholder="搜索标题、内容或 #标签"
+           placeholder-style="color:#B5A993; font-size:28rpx;"
+           value="{{query}}"
+           bindinput="onSearchInput" />
+  </view>
+
+  <!-- tab bar -->
+  <scroll-view class="tab-bar" scroll-x enhanced show-scrollbar="{{false}}">
+    <view class="tab-inner">
+      <view wx:for="{{tabs}}" wx:key="value"
+            class="tab {{activeStatus===item.value?'tab-active':''}}"
+            bindtap="onStatusTab" data-status="{{item.value}}">
+        <text class="tab-label">{{item.label}}</text>
+        <text class="tab-count">{{item.count}}</text>
+      </view>
     </view>
   </scroll-view>
 
-  <!-- 卡片列表 -->
+  <!-- card list -->
   <scroll-view class="list" scroll-y>
-    <!-- 空态 -->
     <view wx:if="{{isEmpty}}" class="empty">
       <text class="empty-icon">⚡</text>
       <text class="empty-title">还没有灵感</text>
       <text class="empty-desc">点击右下角的按钮，记录第一个想法</text>
     </view>
 
-    <view wx:else>
-      <view wx:for="{{cards}}" wx:key="id"
-            class="card"
-            bindtap="goDetail" data-id="{{item.id}}">
-        <view class="card-header">
-          <text class="card-title">{{item.title}}</text>
-          <view class="status-badge status-badge-{{item.status}}">
-            <text class="status-text" style="color:{{item.statusColor}}">{{item.statusLabel}}</text>
+    <block wx:else>
+      <block wx:for="{{groups}}" wx:key="label" wx:for-item="group">
+        <!-- date group header -->
+        <view class="group-header">
+          <text class="group-label">{{group.label}}</text>
+          <text class="group-sep">· {{group.count}}</text>
+          <view class="group-line"></view>
+        </view>
+        <!-- cards in group -->
+        <view class="group-cards">
+          <view wx:for="{{group.cards}}" wx:key="id" wx:for-item="card"
+                class="card"
+                bindtap="goDetail" data-id="{{card.id}}">
+            <view class="card-rail" style="background:{{card.statusDot}}"></view>
+            <view class="card-body">
+              <view class="card-top">
+                <text class="card-title">{{card.title}}</text>
+                <view class="status-pill" style="background:{{card.statusSoft}}">
+                  <view class="status-dot" style="background:{{card.statusDot}}"></view>
+                  <text class="status-pill-label" style="color:{{card.statusInk}}">{{card.statusLabel}}</text>
+                </view>
+              </view>
+              <text wx:if="{{card.content}}" class="card-content">{{card.content}}</text>
+              <view class="card-footer">
+                <view class="card-tags">
+                  <text wx:for="{{card.tags}}" wx:key="*this" wx:for-item="tag"
+                        class="card-tag">#{{tag}}</text>
+                </view>
+                <text class="card-time">{{card.relTimeStr}}</text>
+              </view>
+            </view>
           </view>
         </view>
-        <text wx:if="{{item.content}}" class="card-content">{{item.content}}</text>
-        <view class="card-footer">
-          <view wx:if="{{item.tags.length}}" class="tags">
-            <text wx:for="{{item.tags}}" wx:key="*this" wx:for-item="tag" class="tag"># {{tag}}</text>
-          </view>
-          <text class="card-time">{{item.relTimeStr}}</text>
-        </view>
-      </view>
-    </view>
+      </block>
+    </block>
+
+    <view style="height:140rpx;"></view>
   </scroll-view>
 
-  <!-- 新建悬浮按钮 -->
+  <!-- FAB -->
   <view class="fab" bindtap="goAdd">
-    <text class="fab-icon">+</text>
+    <view class="fab-plus">
+      <text class="fab-plus-icon">+</text>
+    </view>
+    <text class="fab-label">记一笔</text>
   </view>
 
 </view>

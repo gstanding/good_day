@@ -1,80 +1,147 @@
-<view class="container">
+<!-- subpackages/flash/pages/edit/edit.wxml -->
 
-  <!-- Step: input -->
-  <view wx:if="{{step === 'input'}}" class="input-page">
-    <textarea class="main-textarea"
-              placeholder="随手记下这个想法..."
-              placeholder-style="color:#C7C7CC"
-              value="{{rawInput}}"
-              bindinput="onRawInput"
-              auto-focus
-              auto-height />
+<!-- Step: input -->
+<view wx:if="{{step === 'input'}}" class="input-page">
+  <!-- paper line background via CSS -->
+  <view class="paper-lines"></view>
+
+  <!-- status bar spacer + top bar -->
+  <view style="height:{{statusBarH}}px; flex-shrink:0;"></view>
+  <view class="input-topbar">
+    <view class="close-btn" bindtap="onCloseTap">
+      <text class="close-icon">×</text>
+    </view>
+    <text class="input-timestamp">{{timeStamp}}</text>
+  </view>
+
+  <!-- prompt header -->
+  <view class="input-prompt">
+    <view class="new-capsule-badge">
+      <text class="new-capsule-text">新胶囊</text>
+    </view>
+    <text class="input-question">有什么一闪而过的念头？</text>
+  </view>
+
+  <!-- writing area -->
+  <textarea class="main-textarea"
+            placeholder="随手记下这个想法…"
+            placeholder-style="color:#B5A993; font-size:34rpx; line-height:64rpx;"
+            value="{{rawInput}}"
+            bindinput="onRawInput"
+            auto-focus />
+
+  <!-- bottom actions -->
+  <view class="input-bottom">
+    <view class="input-meta-row">
+      <text class="char-count">{{rawInput.length}} 字</text>
+    </view>
     <view class="input-actions">
       <view class="btn-ai" bindtap="aiOrganize">
-        <text class="btn-ai-text">✨  AI 整理</text>
+        <text class="btn-ai-spark">✦</text>
+        <text class="btn-ai-text">让 AI 整理成胶囊</text>
       </view>
       <view class="btn-skip" bindtap="quickSave">
-        <text class="btn-skip-text">直接保存</text>
+        <text class="btn-skip-text">直接存</text>
       </view>
     </view>
   </view>
+</view>
 
-  <!-- Step: loading -->
-  <view wx:if="{{step === 'loading'}}" class="loading-page">
-    <text class="loading-emoji">✨</text>
-    <text class="loading-text">AI 正在整理...</text>
+<!-- Step: loading -->
+<view wx:if="{{step === 'loading'}}" class="loading-page">
+  <view style="height:{{statusBarH}}px;"></view>
+  <view class="loading-center">
+    <view class="loading-ring-outer">
+      <view class="loading-ring-inner">
+        <text class="loading-spark-icon">✦</text>
+      </view>
+    </view>
+    <text class="loading-title">正在把念头封进胶囊…</text>
+    <text class="loading-sub">AI 正在提取标题和标签，通常只需 3 秒</text>
+    <view class="loading-dots">
+      <view class="dot dot-1"></view>
+      <view class="dot dot-2"></view>
+      <view class="dot dot-3"></view>
+    </view>
+  </view>
+</view>
+
+<!-- Step: preview -->
+<view wx:if="{{step === 'preview'}}" class="preview-page">
+  <view style="height:{{statusBarH}}px; flex-shrink:0;"></view>
+
+  <!-- top bar -->
+  <view class="preview-topbar">
+    <view class="back-btn" bindtap="backToInput">
+      <text class="back-icon">‹</text>
+    </view>
+    <view class="ai-done-badge">
+      <text class="ai-done-text">✦ AI 整理完成</text>
+    </view>
+    <view style="width:64rpx;"></view>
   </view>
 
-  <!-- Step: preview -->
-  <scroll-view wx:if="{{step === 'preview'}}" class="preview-page" scroll-y>
-
-    <view class="raw-card">
-      <text class="raw-label">原始内容</text>
-      <text class="raw-text">{{rawInput}}</text>
-      <text class="raw-edit" bindtap="backToInput">修改 ›</text>
+  <scroll-view class="preview-scroll" scroll-y>
+    <!-- quoted raw input -->
+    <view class="quoted-block">
+      <view class="quote-bar"></view>
+      <view class="quote-content">
+        <text class="quote-label">你写的</text>
+        <view class="quote-body-row">
+          <text class="quote-text">{{rawInput}}</text>
+          <text class="quote-edit-btn" bindtap="backToInput">修改 ›</text>
+        </view>
+      </view>
     </view>
 
-    <text class="field-label">标题</text>
-    <input class="field-input"
+    <!-- title field -->
+    <text class="preview-section-label">标题</text>
+    <input class="preview-title-input"
            value="{{title}}"
            bindinput="onTitleInput"
            placeholder="请输入标题"
-           placeholder-style="color:#C7C7CC"
+           placeholder-style="color:#B5A993; font-size:40rpx; font-weight:700;"
            maxlength="60" />
+    <view class="title-divider"></view>
 
-    <text class="field-label">标签</text>
+    <!-- tags -->
+    <text class="preview-section-label" style="margin-top:44rpx;">标签 · AI 建议</text>
     <view class="tags-row">
       <view wx:for="{{tags}}" wx:key="*this" class="tag-chip">
-        <text class="tag-text"># {{item}}</text>
-        <text class="tag-remove" bindtap="removeTag" data-index="{{index}}">×</text>
-      </view>
-      <input wx:if="{{tags.length < 5}}"
-             class="tag-add-input"
-             value="{{tagInput}}"
-             placeholder="+ 添加"
-             placeholder-style="color:#C7C7CC"
-             bindinput="onTagInputChange"
-             bindconfirm="onTagInputConfirm" />
-    </view>
-
-    <block wx:if="{{isEdit}}">
-      <text class="field-label">状态</text>
-      <view class="status-options">
-        <view wx:for="{{statusOptions}}" wx:key="value"
-              class="status-option {{status === item.value ? 'status-option-active' : ''}}"
-              style="{{status === item.value ? 'background:' + item.color + ';' : ''}}"
-              bindtap="onStatusSelect" data-status="{{item.value}}">
-          <text class="status-option-text" style="color:{{status === item.value ? '#fff' : '#3C3C43'}}">
-            {{item.label}}
-          </text>
+        <text class="tag-text">#{{item}}</text>
+        <view class="tag-remove" bindtap="removeTag" data-index="{{index}}">
+          <text class="tag-remove-icon">×</text>
         </view>
       </view>
-    </block>
-
-    <view class="save-btn" bindtap="confirmSave">
-      <text class="save-text">保存</text>
+      <view wx:if="{{tags.length < 5}}" class="tag-add-wrap">
+        <input class="tag-add-input"
+               value="{{tagInput}}"
+               placeholder="+ 添加"
+               placeholder-style="color:#B5A993; font-size:24rpx;"
+               bindinput="onTagInputChange"
+               bindconfirm="onTagInputConfirm" />
+      </view>
     </view>
 
+    <!-- status -->
+    <text class="preview-section-label" style="margin-top:44rpx;">当前状态</text>
+    <view class="status-tiles">
+      <view wx:for="{{statusOptions}}" wx:key="value"
+            class="status-tile"
+            style="{{status===item.value?'background:'+item.soft+';border:3rpx solid '+item.dot+';':'background:#fff;border:2rpx solid rgba(60,40,16,0.12);'}}"
+            bindtap="onStatusSelect" data-status="{{item.value}}">
+        <view class="tile-dot" style="background:{{item.dot}}"></view>
+        <text class="tile-label" style="color:{{status===item.value?item.ink:'#5C5247'}}">{{item.label}}</text>
+      </view>
+    </view>
+
+    <view style="height:180rpx;"></view>
   </scroll-view>
 
+  <!-- save button pinned at bottom -->
+  <view class="preview-save-wrap">
+    <view class="save-btn" bindtap="confirmSave">
+      <text class="save-text">封存这颗胶囊</text>
+    </view>
+  </view>
 </view>

@@ -15,6 +15,37 @@ const STATUS_COLORS = {
   archived: '#8E8E93',
 };
 
+const STATUS_DOTS = {
+  new: '#6366F1',
+  in_progress: '#E89515',
+  done: '#22A150',
+  archived: '#9C9C9C',
+};
+
+const STATUS_SOFTS = {
+  new: '#ECECFB',
+  in_progress: '#FBEFD7',
+  done: '#DEF1E0',
+  archived: '#ECEBEA',
+};
+
+const STATUS_INKS = {
+  new: '#4F4FC0',
+  in_progress: '#A86200',
+  done: '#15803D',
+  archived: '#6E6E76',
+};
+
+function groupLabel(ts) {
+  const todayStart = new Date();
+  todayStart.setHours(0, 0, 0, 0);
+  const t = todayStart.getTime();
+  if (ts >= t) return '今天';
+  if (ts >= t - 86400000) return '昨天';
+  if (ts >= t - 6 * 86400000) return '本周';
+  return '更早';
+}
+
 function uuid() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     var r = Math.random() * 16 | 0, v = c === 'x' ? r : (r & 0x3 | 0x8);
@@ -82,7 +113,12 @@ function enrichCard(card) {
     ...card,
     statusLabel: STATUS_LABELS[card.status] || card.status,
     statusColor: STATUS_COLORS[card.status] || '#8E8E93',
-    relTimeStr: relTime(card.updatedAt || card.createdAt),
+    statusDot:   STATUS_DOTS[card.status]   || '#9C9C9C',
+    statusSoft:  STATUS_SOFTS[card.status]  || '#ECEBEA',
+    statusInk:   STATUS_INKS[card.status]   || '#6E6E76',
+    relTimeStr:  relTime(card.updatedAt || card.createdAt),
+    group:       groupLabel(card.createdAt),
+    daysSince:   Math.floor((Date.now() - card.createdAt) / 86400000),
   };
 }
 
@@ -105,6 +141,10 @@ module.exports = {
   searchCards,
   getDailyCard,
   enrichCard,
+  groupLabel,
   STATUS_LABELS,
   STATUS_COLORS,
+  STATUS_DOTS,
+  STATUS_SOFTS,
+  STATUS_INKS,
 };

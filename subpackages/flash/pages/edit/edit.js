@@ -1,10 +1,10 @@
 const cardService = require('../../utils/cardService');
 
 const STATUS_OPTIONS = [
-  { value: 'new', label: '待跟进', color: '#6366F1' },
-  { value: 'in_progress', label: '进行中', color: '#F59E0B' },
-  { value: 'done', label: '已完成', color: '#22C55E' },
-  { value: 'archived', label: '已归档', color: '#8E8E93' },
+  { value: 'new',         label: '待跟进', dot: '#6366F1', soft: '#ECECFB', ink: '#4F4FC0' },
+  { value: 'in_progress', label: '进行中', dot: '#E89515', soft: '#FBEFD7', ink: '#A86200' },
+  { value: 'done',        label: '已完成', dot: '#22A150', soft: '#DEF1E0', ink: '#15803D' },
+  { value: 'archived',    label: '已归档', dot: '#9C9C9C', soft: '#ECEBEA', ink: '#6E6E76' },
 ];
 
 Page({
@@ -19,13 +19,19 @@ Page({
     id: '',
     createdAt: 0,
     statusOptions: STATUS_OPTIONS,
+    statusBarH: 0,
+    timeStamp: '',
   },
 
   onLoad(options) {
+    const sys = wx.getSystemInfoSync();
+    this.setData({
+      statusBarH: sys.statusBarHeight || 20,
+      timeStamp: this._buildTimeStamp(),
+    });
     if (options.id) {
       const card = cardService.getCardById(options.id);
       if (card) {
-        wx.setNavigationBarTitle({ title: '编辑灵感' });
         const raw = card.content ? `${card.title}\n${card.content}` : card.title;
         this.setData({
           isEdit: true,
@@ -39,6 +45,18 @@ Page({
         });
       }
     }
+  },
+
+  _buildTimeStamp() {
+    const d = new Date();
+    const h = String(d.getHours()).padStart(2, '0');
+    const m = String(d.getMinutes()).padStart(2, '0');
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    return `${h}:${m} · ${days[d.getDay()]}`;
+  },
+
+  onCloseTap() {
+    wx.navigateBack();
   },
 
   onRawInput(e) {
@@ -147,5 +165,4 @@ Page({
     wx.showToast({ title: '已保存', icon: 'success' });
     setTimeout(() => wx.navigateBack(), 600);
   },
-
 });

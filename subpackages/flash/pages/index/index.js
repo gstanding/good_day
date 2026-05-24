@@ -1,19 +1,22 @@
 const cardService = require('../../utils/cardService');
 
-const STATUS_TABS = [
-  { label: '全部', value: 'all' },
-  { label: '待跟进', value: 'new' },
-  { label: '进行中', value: 'in_progress' },
-  { label: '已完成', value: 'done' },
-];
+const GROUP_ORDER = ['今天', '昨天', '本周', '更早'];
 
 Page({
   data: {
-    cards: [],
+    groups: [],
+    tabs: [],
+    totalCount: 0,
+    weekCount: 0,
     query: '',
     activeStatus: 'all',
-    tabs: STATUS_TABS,
+    statusBarH: 0,
     isEmpty: false,
+  },
+
+  onLoad() {
+    const sys = wx.getSystemInfoSync();
+    this.setData({ statusBarH: sys.statusBarHeight || 20 });
   },
 
   onShow() {
@@ -22,9 +25,41 @@ Page({
 
   _reload() {
     const { query, activeStatus } = this.data;
-    const raw = cardService.searchCards(query, null, activeStatus);
-    const cards = raw.filter(c => c.status !== 'archived').map(cardService.enrichCard);
-    this.setData({ cards, isEmpty: cards.length === 0 });
+
+    const all = cardService.searchCards('', null, 'all')
+      .filter(c => c.status !== 'archived');
+
+    const weekAgo = Date.now() - 7 * 86400000;
+    const weekCount = all.filter(c => c.createdAt >= weekAgo).length;
+
+    const tabs = [
+      { label: '全部',   value: 'all',         count: all.length },
+      { label: '待跟进', value: 'new',          count: all.filter(c => c.status === 'new').length },
+      { label: '进行中', value: 'in_progress',  count: all.filter(c => c.status === 'in_progress').length },
+      { label: '已完成', value: 'done',         count: all.filter(c => c.status === 'done').length },
+    ];
+
+    const raw = cardService.searchCards(query, null, activeStatus)
+      .filter(c => c.status !== 'archived');
+    const cards = raw.map(cardService.enrichCard);
+
+    const groupMap = {};
+    for (const card of cards) {
+      const g = card.group;
+      if (!groupMap[g]) groupMap[g] = [];
+      groupMap[g].push(card);
+    }
+    const groups = GROUP_ORDER
+      .filter(g => groupMap[g])
+      .map(g => ({ label: g, count: groupMap[g].length, cards: groupMap[g] }));
+
+    this.setData({
+      groups,
+      tabs,
+      totalCount: all.length,
+      weekCount,
+      isEmpty: cards.length === 0,
+    });
   },
 
   onSearchInput(e) {
@@ -40,7 +75,6 @@ Page({
   },
 
   goDetail(e) {
-    const id = e.currentTarget.dataset.id;
-    wx.navigateTo({ url: `../detail/detail?id=${id}` });
+    wx.navigateTo({ url: `../detail/detail?id=${e.currentTarget.dataset.id}` });
   },
 });
