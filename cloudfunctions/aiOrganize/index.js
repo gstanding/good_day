@@ -19,7 +19,7 @@ exports.main = async (event) => {
       },
       { role: 'user', content: rawInput.trim() },
     ],
-    max_tokens: 800,
+    max_tokens: 2000,
     temperature: 0.3,
   });
 
