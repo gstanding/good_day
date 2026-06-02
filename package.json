@@ -3,10 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "preview": "ACTION=preview node scripts/mp-ci.js",
-    "upload": "ACTION=upload node scripts/mp-ci.js"
+    "upload": "ACTION=upload node scripts/mp-ci.js",
+    "ci:preview": "node20=$(/Users/viaeou/.local/share/fnm/bin/fnm exec --using 20 -- which node 2>/dev/null || echo /Users/viaeou/.local/share/fnm/node-versions/v20.20.2/installation/bin/node); echo \"Using Node 20 at: $node20\"; ACTION=preview \"$node20\" scripts/mp-ci.js",
+    "ci:upload": "node20=$(/Users/viaeou/.local/share/fnm/bin/fnm exec --using 20 -- which node 2>/dev/null || echo /Users/viaeou/.local/share/fnm/node-versions/v20.20.2/installation/bin/node); echo \"Using Node 20 at: $node20\"; ACTION=upload \"$node20\" scripts/mp-ci.js"
   },
   "keywords": [],
   "author": "",

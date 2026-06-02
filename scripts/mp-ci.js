@@ -25,7 +25,7 @@ async function run() {
       project,
       desc: DESC,
       setting: { es6: true, minify: false },
-      qrcodeFormat: 'terminal',
+      qrcodeFormat: 'image',
       qrcodeOutputDest: path.join(__dirname, '..', 'preview-qr.jpg'),
     })
     console.log('预览二维码已生成，用手机扫码调试')
