@@ -19,7 +19,7 @@ exports.main = async (event) => {
       },
       { role: 'user', content: rawInput.trim() },
     ],
-    max_tokens: 200,
+    max_tokens: 800,
     temperature: 0.3,
   });
 
@@ -46,10 +46,15 @@ exports.main = async (event) => {
           try {
             const json = JSON.parse(data);
             const text = json.choices[0].message.content.trim();
-            // 1. 过滤 <think>...</think> 推理块（M2.7 思维链模型）
-            // 2. 从剩余文本中找第一个完整 JSON 对象，兼容各种包裹格式
-            const stripped = text.replace(/<think>[\s\S]*?<\/think>/g, '');
-            const jsonMatch = stripped.match(/\{[\s\S]*\}/);
+            // 1. 过滤完整的 <think>...</think> 推理块（M2.7 思维链模型）
+            let cleaned = text.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+            // 2. 兜底：若 <think> 未正常闭合（max_tokens 截断），找第一个 { 往后取
+            if (cleaned.includes('<think>')) {
+              const braceIdx = cleaned.indexOf('{');
+              cleaned = braceIdx >= 0 ? cleaned.slice(braceIdx) : '';
+            }
+            // 3. 从剩余文本中提取第一个完整 JSON 对象
+            const jsonMatch = cleaned.match(/\{[\s\S]*\}/);
             if (!jsonMatch) throw new Error('no json found');
             resolve({ result: JSON.parse(jsonMatch[0]) });
           } catch (e) {
