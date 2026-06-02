@@ -88,12 +88,9 @@ Page({
     themes: THEME_LIST,
     pickerOpen: false,
     hasAnniversary: false,
-    heroTitle: '',
-    heroDays: 0,
-    heroDate: '',
+    annList: [],        // 所有纪念日，按距今天数排序
+    currentAnnIdx: 0,  // 当前 swiper 位置
     annMeta: '',
-    annImagePath: '',
-    annId: '',
     capMeta: '',
     oaLoaded: false,
     oaUsername: '',
@@ -132,45 +129,45 @@ Page({
   _loadAnniversary() {
     try {
       const items = wx.getStorageSync('GOOD_DAY_ANNIVERSARIES') || [];
-      // 注意：mode 字段为 'countDown'（大写 D）
       const countdowns = items.filter(i => i.mode === 'countDown');
 
       if (!countdowns.length) {
-        this.setData({ hasAnniversary: false, annMeta: '' });
+        this.setData({ hasAnniversary: false, annMeta: '', annList: [], currentAnnIdx: 0 });
         return;
       }
 
       const now = new Date();
       now.setHours(0, 0, 0, 0);
-      let best = null, bestDays = Infinity;
 
-      countdowns.forEach(item => {
+      const annList = countdowns.map(item => {
         const next = this._calcNextOccurrence(item.date, item.cycle || 'year');
-        if (!next) return;
+        if (!next) return null;
         const days = Math.ceil((next - now) / 86400000);
-        if (days >= 0 && days < bestDays) {
-          bestDays = days;
-          best = { item, days, next };
-        }
-      });
+        const m = next.getMonth() + 1;
+        const d = next.getDate();
+        return {
+          id: item.id,
+          title: item.title,
+          days,
+          heroDate: `${m}月${d}日`,
+          imagePath: item.imagePath || '',
+          hasImage: !!item.imagePath,
+        };
+      }).filter(Boolean).sort((a, b) => a.days - b.days);
 
-      if (best) {
-        const m = best.next.getMonth() + 1;
-        const d = best.next.getDate();
+      if (annList.length) {
+        const best = annList[0];
         this.setData({
           hasAnniversary: true,
-          heroTitle: best.item.title,
-          heroDays: best.days,
-          heroDate: `${m}月${d}日`,
+          annList,
+          currentAnnIdx: 0,
           annMeta: best.days === 0 ? '就是今天' : `距下一个 ${best.days} 天`,
-          annImagePath: best.item.imagePath || '',
-          annId: best.item.id,
         });
       } else {
-        this.setData({ hasAnniversary: false, annMeta: '', annImagePath: '', annId: '' });
+        this.setData({ hasAnniversary: false, annMeta: '', annList: [], currentAnnIdx: 0 });
       }
     } catch (e) {
-      this.setData({ hasAnniversary: false, annMeta: '' });
+      this.setData({ hasAnniversary: false, annMeta: '', annList: [], currentAnnIdx: 0 });
     }
   },
 
@@ -266,9 +263,21 @@ Page({
     wx.navigateTo({ url: '/subpackages/anniversary/pages/index/index' });
   },
 
+  onAnnSwiperChange(e) {
+    const idx = e.detail.current;
+    const ann = this.data.annList[idx];
+    if (ann) {
+      this.setData({
+        currentAnnIdx: idx,
+        annMeta: ann.days === 0 ? '就是今天' : `距下一个 ${ann.days} 天`,
+      });
+    }
+  },
+
   goHero() {
-    if (this.data.annId) {
-      wx.navigateTo({ url: `/subpackages/anniversary/pages/detail/detail?id=${this.data.annId}` });
+    const ann = this.data.annList[this.data.currentAnnIdx];
+    if (ann) {
+      wx.navigateTo({ url: `/subpackages/anniversary/pages/detail/detail?id=${ann.id}` });
     } else {
       wx.navigateTo({ url: '/subpackages/anniversary/pages/index/index' });
     }

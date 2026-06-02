@@ -18,36 +18,62 @@
       </view>
     </view>
 
-    <!-- ── Hero card ── -->
-    <view class="hero {{annImagePath ? 'hero-with-photo' : ''}}" style="{{annImagePath ? '' : 'background:' + t.heroBg + ';'}} box-shadow:{{t.heroShadow}}" bindtap="goHero">
-      <image wx:if="{{annImagePath}}" class="hero-bg-image" src="{{annImagePath}}" mode="aspectFill" />
-      <view wx:if="{{annImagePath}}" class="hero-bg-dim"></view>
-      <view class="hero-circle"></view>
-      <view class="hero-content">
-        <view class="hero-eyebrow">
-          <view class="hero-dot" style="background:{{annImagePath ? '#fff' : t.heroAccent}}"></view>
-          <text class="hero-eyebrow-text" style="color:{{annImagePath ? '#fff' : t.heroText}}">下一个纪念日</text>
-        </view>
-        <block wx:if="{{hasAnniversary}}">
-          <text class="hero-title" style="color:{{annImagePath ? '#fff' : t.heroText}}">{{heroTitle}}</text>
-          <view class="hero-count-row">
-            <block wx:if="{{heroDays === 0}}">
-              <text class="hero-today" style="color:{{annImagePath ? '#fff' : t.heroAccent}}">就是今天</text>
-            </block>
-            <block wx:else>
-              <text class="hero-days" style="color:{{annImagePath ? '#fff' : t.heroText}}">{{heroDays}}</text>
-              <text class="hero-date-label" style="color:{{annImagePath ? 'rgba(255,255,255,0.8)' : t.heroMuted}}">天后 · {{heroDate}}</text>
-            </block>
+    <!-- ── Hero swiper ── -->
+    <block wx:if="{{hasAnniversary}}">
+      <swiper class="hero-swiper"
+              circular
+              bindchange="onAnnSwiperChange"
+              current="{{currentAnnIdx}}">
+        <swiper-item wx:for="{{annList}}" wx:key="id" wx:for-item="ann">
+          <view class="hero {{ann.hasImage ? 'hero-with-photo' : ''}}"
+                style="{{ann.hasImage ? '' : 'background:' + t.heroBg + ';'}} box-shadow:{{t.heroShadow}}"
+                bindtap="goHero">
+            <image wx:if="{{ann.hasImage}}" class="hero-bg-image" src="{{ann.imagePath}}" mode="aspectFill" />
+            <view wx:if="{{ann.hasImage}}" class="hero-bg-dim"></view>
+            <view class="hero-circle"></view>
+            <view class="hero-content">
+              <view class="hero-eyebrow">
+                <view class="hero-dot" style="background:{{ann.hasImage ? '#fff' : t.heroAccent}}"></view>
+                <text class="hero-eyebrow-text" style="color:{{ann.hasImage ? '#fff' : t.heroText}}">下一个纪念日</text>
+              </view>
+              <text class="hero-title" style="color:{{ann.hasImage ? '#fff' : t.heroText}}">{{ann.title}}</text>
+              <view class="hero-count-row">
+                <block wx:if="{{ann.days === 0}}">
+                  <text class="hero-today" style="color:{{ann.hasImage ? '#fff' : t.heroAccent}}">就是今天</text>
+                </block>
+                <block wx:else>
+                  <text class="hero-days" style="color:{{ann.hasImage ? '#fff' : t.heroText}}">{{ann.days}}</text>
+                  <text class="hero-date-label" style="color:{{ann.hasImage ? 'rgba(255,255,255,0.8)' : t.heroMuted}}">天后 · {{ann.heroDate}}</text>
+                </block>
+              </view>
+            </view>
           </view>
-        </block>
-        <block wx:else>
-          <text class="hero-title" style="color:{{annImagePath ? '#fff' : t.heroText}}">留下你的第一个重要时刻</text>
-          <view class="hero-count-row">
-            <text class="hero-empty" style="color:{{annImagePath ? 'rgba(255,255,255,0.8)' : t.heroMuted}}">去添加纪念日 →</text>
-          </view>
-        </block>
+        </swiper-item>
+      </swiper>
+      <!-- dots indicator -->
+      <view wx:if="{{annList.length > 1}}" class="hero-dots">
+        <view wx:for="{{annList}}" wx:key="id"
+              class="hero-dot-item {{index === currentAnnIdx ? 'hero-dot-active' : ''}}"
+              style="background:{{index === currentAnnIdx ? t.heroAccent : 'rgba(0,0,0,0.15)'}}"></view>
       </view>
-    </view>
+    </block>
+
+    <!-- hero empty state -->
+    <block wx:else>
+      <view class="hero" style="background:{{t.heroBg}}; box-shadow:{{t.heroShadow}}" bindtap="goAnniversary">
+        <view class="hero-circle"></view>
+        <view class="hero-content">
+          <view class="hero-eyebrow">
+            <view class="hero-dot" style="background:{{t.heroAccent}}"></view>
+            <text class="hero-eyebrow-text" style="color:{{t.heroText}}">下一个纪念日</text>
+          </view>
+          <text class="hero-title" style="color:{{t.heroText}}">留下你的第一个重要时刻</text>
+          <view class="hero-count-row">
+            <text class="hero-empty" style="color:{{t.heroMuted}}">去添加纪念日 →</text>
+          </view>
+        </view>
+      </view>
+    </block>
 
     <!-- ── 今日灵感 widget ── -->
     <view wx:if="{{flashCard}}" class="flash-widget" bindtap="goFlashCard"

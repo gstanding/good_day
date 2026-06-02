@@ -1,11 +1,17 @@
 /* subpackages/flash/pages/detail/detail.wxss */
-page { background: #F2EBDD; }
+page {
+  background: #F2EBDD;
+  overflow-x: hidden;
+}
 
 .page {
+  width: 100%;
+  box-sizing: border-box;
   height: 100vh;
   display: flex;
   flex-direction: column;
   background: #F2EBDD;
+  overflow-x: hidden;
 }
 
 /* ── top bar ── */
@@ -44,6 +50,8 @@ page { background: #F2EBDD; }
 /* ── scrollable content ── */
 .detail-scroll {
   flex: 1;
+  width: 100%;
+  box-sizing: border-box;
   padding: 24rpx 44rpx 0;
 }
 

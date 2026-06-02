@@ -1,11 +1,17 @@
 /* subpackages/flash/pages/index/index.wxss */
-page { background: #F2EBDD; }
+page {
+  background: #F2EBDD;
+  overflow-x: hidden;
+}
 
 .page {
+  width: 100%;
+  box-sizing: border-box;
   height: 100vh;
   display: flex;
   flex-direction: column;
   background: #F2EBDD;
+  overflow-x: hidden;
 }
 
 /* ── module header ── */
@@ -193,6 +199,8 @@ page { background: #F2EBDD; }
 
 /* ── card ── */
 .card {
+  width: 100%;
+  box-sizing: border-box;
   background: #FFFFFF;
   border-radius: 32rpx;
   border: 1rpx solid rgba(60,40,16,0.06);

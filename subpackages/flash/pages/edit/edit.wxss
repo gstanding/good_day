@@ -1,10 +1,15 @@
 /* subpackages/flash/pages/edit/edit.wxss */
-page { background: #F2EBDD; }
+page {
+  background: #F2EBDD;
+  overflow-x: hidden;
+}
 
 /* ══════════════════════════════════════
    STEP: INPUT
 ══════════════════════════════════════ */
 .input-page {
+  width: 100%;
+  box-sizing: border-box;
   min-height: 100vh;
   background: #F2EBDD;
   position: relative;
@@ -187,10 +192,13 @@ page { background: #F2EBDD; }
    STEP: LOADING
 ══════════════════════════════════════ */
 .loading-page {
+  width: 100%;
+  box-sizing: border-box;
   min-height: 100vh;
   background: #F2EBDD;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 
 .loading-center {
@@ -274,11 +282,14 @@ page { background: #F2EBDD; }
    STEP: PREVIEW
 ══════════════════════════════════════ */
 .preview-page {
+  width: 100%;
+  box-sizing: border-box;
   height: 100vh;
   background: #F2EBDD;
   display: flex;
   flex-direction: column;
   position: relative;
+  overflow-x: hidden;
 }
 
 .preview-topbar {
@@ -323,6 +334,8 @@ page { background: #F2EBDD; }
 
 .preview-scroll {
   flex: 1;
+  width: 100%;
+  box-sizing: border-box;
   padding: 24rpx 44rpx 0;
 }
 

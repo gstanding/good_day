@@ -28,6 +28,7 @@ Page({
 
     const all = cardService.searchCards('', null, 'all')
       .filter(c => c.status !== 'archived');
+    const archivedAll = cardService.searchCards('', null, 'archived');
 
     const weekAgo = Date.now() - 7 * 86400000;
     const weekCount = all.filter(c => c.createdAt >= weekAgo).length;
@@ -37,10 +38,17 @@ Page({
       { label: '待跟进', value: 'new',          count: all.filter(c => c.status === 'new').length },
       { label: '进行中', value: 'in_progress',  count: all.filter(c => c.status === 'in_progress').length },
       { label: '已完成', value: 'done',         count: all.filter(c => c.status === 'done').length },
+      { label: '已归档', value: 'archived',     count: archivedAll.length },
     ];
 
-    const raw = cardService.searchCards(query, null, activeStatus)
-      .filter(c => c.status !== 'archived');
+    let raw;
+    if (activeStatus === 'archived') {
+      raw = cardService.searchCards(query, null, 'archived');
+    } else if (activeStatus === 'all') {
+      raw = cardService.searchCards(query, null, 'all').filter(c => c.status !== 'archived');
+    } else {
+      raw = cardService.searchCards(query, null, activeStatus);
+    }
     const cards = raw.map(cardService.enrichCard);
 
     const groupMap = {};
