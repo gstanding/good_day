@@ -23,7 +23,7 @@
 
     <textarea class="main-textarea"
               placeholder="随手记下这个想法…"
-              placeholder-style="color:#B5A993; font-size:34rpx; line-height:56rpx;"
+              placeholder-style="color:#B5A993; font-size:34rpx; line-height:48rpx;"
               value="{{rawInput}}"
               bindinput="onRawInput"
               maxlength="140"

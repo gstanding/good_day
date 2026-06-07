@@ -19,7 +19,11 @@ page {
 }
 
 /* scrollable area between topbar and bottom actions */
-/* paper lines: fixed to scroll-view viewport so they never drift with scroll offset */
+/* 纸线画在两行文字间隙的正中（分隔线风格），无论 WeChat 原生 textarea 文字
+   贴顶还是居中，线都落在空白区内，不穿过文字。
+   line-height=48rpx，font-size=34rpx → 行间空白≈14rpx（上下各约7rpx）
+   separator 落在间隙正中：文字底(34) + 7 = 41rpx 处；
+   background-position-y 让首条线对齐 prompt高度(≈198)+textarea上内边距(12)+34+7 = 251rpx */
 .input-middle {
   flex: 1;
   width: 100%;
@@ -27,13 +31,15 @@ page {
   overflow: hidden;
   background-image: linear-gradient(
     transparent 0,
-    transparent 54rpx,
-    rgba(60,40,16,0.07) 54rpx,
-    rgba(60,40,16,0.07) 56rpx
+    transparent 40rpx,
+    rgba(60,40,16,0.07) 40rpx,
+    rgba(60,40,16,0.07) 42rpx,
+    transparent 42rpx,
+    transparent 48rpx
   );
-  background-size: 100% 56rpx;
+  background-size: 100% 48rpx;
   background-repeat: repeat-y;
-  background-position-y: 204rpx; /* ≈ prompt高度(200) + textarea上内边距(12) - 行高末尾偏移(8) */
+  background-position-y: 211rpx; /* 251 - 40 = 211 */
 }
 
 .input-topbar {
@@ -106,7 +112,7 @@ page {
   padding: 12rpx 44rpx 40rpx;
   font-size: 34rpx;
   color: #2B241B;
-  line-height: 56rpx;
+  line-height: 48rpx;
   letter-spacing: 0.2rpx;
   box-sizing: border-box;
   width: 100%;
