@@ -19,27 +19,21 @@ page {
 }
 
 /* scrollable area between topbar and bottom actions */
+/* paper lines: fixed to scroll-view viewport so they never drift with scroll offset */
 .input-middle {
   flex: 1;
   width: 100%;
   box-sizing: border-box;
   overflow: hidden;
-}
-
-/* faint horizontal-rule paper lines */
-.paper-lines {
-  position: absolute;
-  inset: 0;
-  opacity: 0.6;
-  background-image: repeating-linear-gradient(
-    transparent,
-    transparent 63rpx,
-    rgba(60,40,16,0.08) 63rpx,
-    rgba(60,40,16,0.08) 65rpx
+  background-image: linear-gradient(
+    transparent 0,
+    transparent 54rpx,
+    rgba(60,40,16,0.07) 54rpx,
+    rgba(60,40,16,0.07) 56rpx
   );
-  background-position-y: 280rpx;
-  pointer-events: none;
-  z-index: 0;
+  background-size: 100% 56rpx;
+  background-repeat: repeat-y;
+  background-position-y: 204rpx; /* ≈ prompt高度(200) + textarea上内边距(12) - 行高末尾偏移(8) */
 }
 
 .input-topbar {
@@ -112,7 +106,7 @@ page {
   padding: 12rpx 44rpx 40rpx;
   font-size: 34rpx;
   color: #2B241B;
-  line-height: 64rpx;
+  line-height: 56rpx;
   letter-spacing: 0.2rpx;
   box-sizing: border-box;
   width: 100%;
@@ -136,6 +130,12 @@ page {
 .char-count {
   font-size: 22rpx;
   color: #897C6C;
+  transition: color 0.2s;
+}
+
+.char-warn {
+  color: #A8542B;
+  font-weight: 600;
 }
 
 .input-actions {

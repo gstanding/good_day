@@ -2,8 +2,6 @@
 
 <!-- Step: input -->
 <view wx:if="{{step === 'input'}}" class="input-page">
-  <!-- paper line background via CSS -->
-  <view class="paper-lines"></view>
 
   <!-- status bar spacer + top bar -->
   <view style="height:{{statusBarH}}px; flex-shrink:0;"></view>
@@ -25,9 +23,10 @@
 
     <textarea class="main-textarea"
               placeholder="随手记下这个想法…"
-              placeholder-style="color:#B5A993; font-size:34rpx; line-height:64rpx;"
+              placeholder-style="color:#B5A993; font-size:34rpx; line-height:56rpx;"
               value="{{rawInput}}"
               bindinput="onRawInput"
+              maxlength="140"
               auto-height
               auto-focus />
   </scroll-view>
@@ -35,7 +34,7 @@
   <!-- bottom actions -->
   <view class="input-bottom">
     <view class="input-meta-row">
-      <text class="char-count">{{rawInput.length}} 字</text>
+      <text class="char-count {{charWarn ? 'char-warn' : ''}}">{{charHint}}</text>
     </view>
     <view class="input-actions">
       <view class="btn-ai" bindtap="aiOrganize">

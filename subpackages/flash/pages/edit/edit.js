@@ -21,6 +21,8 @@ Page({
     statusOptions: STATUS_OPTIONS,
     statusBarH: 0,
     timeStamp: '',
+    charHint: '0 / 140',
+    charWarn: false,
   },
 
   onLoad(options) {
@@ -60,7 +62,14 @@ Page({
   },
 
   onRawInput(e) {
-    this.setData({ rawInput: e.detail.value });
+    const val = e.detail.value;
+    const len = val.length;
+    const remaining = 140 - len;
+    const charWarn = len >= 120;
+    const charHint = len >= 120
+      ? (remaining === 0 ? '已达上限' : `还剩 ${remaining} 字`)
+      : `${len} / 140`;
+    this.setData({ rawInput: val, charHint, charWarn });
   },
 
   aiOrganize() {
