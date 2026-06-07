@@ -14,21 +14,23 @@
     <text class="input-timestamp">{{timeStamp}}</text>
   </view>
 
-  <!-- prompt header -->
-  <view class="input-prompt">
-    <view class="new-capsule-badge">
-      <text class="new-capsule-text">新胶囊</text>
+  <!-- scrollable middle: prompt + textarea -->
+  <scroll-view class="input-middle" scroll-y>
+    <view class="input-prompt">
+      <view class="new-capsule-badge">
+        <text class="new-capsule-text">新胶囊</text>
+      </view>
+      <text class="input-question">有什么一闪而过的念头？</text>
     </view>
-    <text class="input-question">有什么一闪而过的念头？</text>
-  </view>
 
-  <!-- writing area -->
-  <textarea class="main-textarea"
-            placeholder="随手记下这个想法…"
-            placeholder-style="color:#B5A993; font-size:34rpx; line-height:64rpx;"
-            value="{{rawInput}}"
-            bindinput="onRawInput"
-            auto-focus />
+    <textarea class="main-textarea"
+              placeholder="随手记下这个想法…"
+              placeholder-style="color:#B5A993; font-size:34rpx; line-height:64rpx;"
+              value="{{rawInput}}"
+              bindinput="onRawInput"
+              auto-height
+              auto-focus />
+  </scroll-view>
 
   <!-- bottom actions -->
   <view class="input-bottom">
