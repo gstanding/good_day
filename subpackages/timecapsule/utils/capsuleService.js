@@ -1,6 +1,7 @@
 // subpackages/timecapsule/utils/capsuleService.js
-const storage = require('./storage'); 
+const storage = require('./storage');
 const util = require('./util');
+const cloudSync = require('../../../utils/cloudSync');
 
 const KEY = 'TIME_CAPSULES';
 const DISCOVERY_RADIUS = 50; // meters
@@ -28,17 +29,21 @@ const getCapsules = () => {
 
 const saveCapsule = (capsule) => {
     const capsules = getCapsules();
-    // Capsule structure: 
+    // Capsule structure:
     // { id, latitude, longitude, filePath, duration, createdAt, userId(mock), title }
     capsules.push(capsule);
     wx.setStorageSync(KEY, capsules);
+    // 同步元数据到云端（filePath 为本地路径，音频文件需单独上传云存储）
+    cloudSync.push('capsules', capsules);
     return capsules;
 }
 
-// Seed mock capsules near GPS — only when none remain, so individual deletions persist
+// Seed mock capsules near GPS — 用一次性 flag 控制，只生成一次
+// 之前用 capsules.some(c => c.isMock) 判断会导致全删后重新生成
+const MOCK_SEEDED_KEY = 'MOCK_CAPSULES_SEEDED';
 const seedMockCapsules = (lat, lng) => {
+    if (wx.getStorageSync(MOCK_SEEDED_KEY)) return;
     const capsules = getCapsules();
-    if (capsules.some(c => c.isMock)) return;
     for (let i = 0; i < 3; i++) {
         const latOffset = (Math.random() - 0.5) * 0.002;
         const lngOffset = (Math.random() - 0.5) * 0.002;
@@ -55,6 +60,7 @@ const seedMockCapsules = (lat, lng) => {
         });
     }
     wx.setStorageSync(KEY, capsules);
+    wx.setStorageSync(MOCK_SEEDED_KEY, true);
 }
 
 const findNearbyCapsule = (lat, lng) => {
@@ -88,6 +94,7 @@ const deleteCapsule = (id) => {
     let capsules = getCapsules();
     capsules = capsules.filter(c => c.id !== id);
     wx.setStorageSync(KEY, capsules);
+    cloudSync.push('capsules', capsules);
 }
 
 const findNearbyCapsules = (lat, lng, radius = 1000) => {

@@ -1,3 +1,5 @@
+const cloudSync = require('../../../utils/cloudSync');
+
 const KEY = 'GOOD_DAY_ANNIVERSARIES';
 
 const getItems = () => {
@@ -17,6 +19,7 @@ const saveItem = (item) => {
     items.push(item);
   }
   wx.setStorageSync(KEY, items);
+  cloudSync.push('anniversaries', items);
   return items;
 }
 
@@ -24,6 +27,7 @@ const deleteItem = (id) => {
   let items = getItems();
   items = items.filter(i => i.id !== id);
   wx.setStorageSync(KEY, items);
+  cloudSync.push('anniversaries', items);
   return items;
 }
 

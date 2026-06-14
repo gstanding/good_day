@@ -1,3 +1,5 @@
+const cloudSync = require('../../../utils/cloudSync');
+
 const KEY = 'FLASH_CARDS';
 const DAILY_KEY = 'FLASH_DAILY_CARD';
 
@@ -66,10 +68,13 @@ function saveCard(card) {
     cards.unshift(card);
   }
   wx.setStorageSync(KEY, cards);
+  cloudSync.push('flashCards', cards);
 }
 
 function deleteCard(id) {
-  wx.setStorageSync(KEY, getCards().filter(c => c.id !== id));
+  const cards = getCards().filter(c => c.id !== id);
+  wx.setStorageSync(KEY, cards);
+  cloudSync.push('flashCards', cards);
 }
 
 function getCardById(id) {
