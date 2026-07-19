@@ -1,0 +1,21 @@
+<!--subpackages/timecapsule/pages/voiceprint-agreement/voiceprint-agreement.wxml-->
+<view class="page-root">
+  <scroll-view class="agreement-scroll" scroll-y="true">
+    <view class="agreement-header">
+      <text class="agreement-title">声纹授权协议</text>
+      <text class="agreement-meta">更新日期：2026年7月19日　生效日期：2026年7月19日</text>
+    </view>
+    <rich-text class="agreement-body" nodes="{{agreementHtml}}"></rich-text>
+  </scroll-view>
+
+  <view class="agreement-footer">
+    <view class="check-row" bindtap="toggleAgree">
+      <icon type="success" size="20" color="{{agreed ? '#07c160' : '#ccc'}}" />
+      <text class="check-label">我已阅读并同意《声纹授权协议》</text>
+    </view>
+    <view class="btn-row">
+      <button class="btn-reject" bindtap="onReject">不同意</button>
+      <button class="btn-agree {{agreed ? '' : 'disabled'}}" bindtap="onConsent">同意并继续</button>
+    </view>
+  </view>
+</view>

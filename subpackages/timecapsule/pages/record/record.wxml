@@ -1,5 +1,6 @@
 <!--subpackages/timecapsule/pages/record/record.wxml-->
 <view class="container">
+  <view class="revoke-entry" bindtap="revokeConsent" wx:if="{{!isRecorded && hasConsented}}">撤回声纹授权</view>
   <view class="timer">{{duration}}s</view>
   <view class="status">{{status}}</view>
 

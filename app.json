@@ -17,7 +17,8 @@
         "pages/map/map",
         "pages/record/record",
         "pages/player/player",
-        "pages/plog/plog"
+        "pages/plog/plog",
+        "pages/voiceprint-agreement/voiceprint-agreement"
       ]
     },
     {
@@ -41,6 +42,9 @@
   "permission": {
     "scope.userLocation": {
       "desc": "您的位置信息将用于查找附近的声音胶囊"
+    },
+    "scope.record": {
+      "desc": "您的麦克风将用于录制声音胶囊，录音仅作为内容保存，不会用于声纹生物识别"
     }
   }
 }

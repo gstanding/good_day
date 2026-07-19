@@ -92,6 +92,17 @@ const findNearbyCapsule = (lat, lng) => {
 
 const deleteCapsule = (id) => {
     let capsules = getCapsules();
+    const target = capsules.find(c => c.id === id);
+    // 删除本地音频与封面文件（履行声纹授权协议承诺：删除胶囊时录音一并删除）
+    if (target) {
+        const fs = wx.getFileSystemManager();
+        if (target.filePath) {
+            try { fs.unlinkSync(target.filePath); } catch (e) { /* 文件可能已不存在，忽略 */ }
+        }
+        if (target.imagePath) {
+            try { fs.unlinkSync(target.imagePath); } catch (e) { /* 同上 */ }
+        }
+    }
     capsules = capsules.filter(c => c.id !== id);
     wx.setStorageSync(KEY, capsules);
     cloudSync.push('capsules', capsules);
