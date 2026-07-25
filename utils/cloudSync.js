@@ -1,8 +1,12 @@
 /**
  * cloudSync.js — 封装 syncData 云函数调用
  *
- * push(type, items)  写本地 → 云端（异步，fire-and-forget，不阻塞 UI）
- * pull(type)         读云端 → 返回数组（或 null 表示该用户尚无数据）
+ * ⚠️ 云开发已停用，push/pull 已降级为空操作（no-op）。
+ * 所有数据仅存本地 Storage，调用方无需改动。
+ *
+ * 如需恢复云同步：
+ *   1. 在 app.js 中恢复 wx.cloud.init(...)
+ *   2. 将下方 push/pull 函数体替换为 wx.cloud.callFunction 调用
  *
  * type: 'anniversaries' | 'flashCards' | 'capsules'
  */
@@ -14,32 +18,19 @@ function isLoggedIn() {
 }
 
 /**
- * 将最新数据推送到云端（不阻塞，失败静默）
+ * 推送到云端 — 已降级为空操作（云开发停用）
  */
 function push(type, items) {
-  if (!isLoggedIn()) return;
-  wx.cloud.callFunction({
-    name: 'syncData',
-    data: { action: 'push', type, items },
-  }).catch(e => {
-    console.error('[cloudSync] push error:', type, e);
-  });
+  // no-op: 云开发已停用，数据仅存本地
 }
 
 /**
- * 从云端拉取数据，返回 items 数组（或 null）
+ * 从云端拉取 — 已降级为空操作（云开发停用）
+ * @returns {Promise<null>}
  */
 async function pull(type) {
-  try {
-    const res = await wx.cloud.callFunction({
-      name: 'syncData',
-      data: { action: 'pull', type },
-    });
-    return res.result ? res.result.items : null;
-  } catch (e) {
-    console.error('[cloudSync] pull error:', type, e);
-    return null;
-  }
+  // no-op: 云开发已停用，返回 null 表示无云端数据
+  return null;
 }
 
 module.exports = { push, pull };

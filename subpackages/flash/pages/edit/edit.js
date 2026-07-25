@@ -79,32 +79,15 @@ Page({
       return;
     }
     this.setData({ step: 'loading' });
-    wx.cloud.callFunction({
-      name: 'aiOrganize',
-      data: { rawInput: rawInput.trim() },
-      timeout: 25000,
-      success: (res) => {
-        const { result, error, code, msg, raw } = res.result || {};
-        if (error || !result) {
-          console.error('[aiOrganize] 云函数返回错误:', error, code, msg, raw);
-          wx.showToast({ title: 'AI 整理失败，请手动填写', icon: 'none' });
-          this.setData({
-            step: 'preview',
-            title: rawInput.trim().split('\n')[0].slice(0, 30),
-            tags: [],
-          });
-          return;
-        }
-        this.setData({
-          step: 'preview',
-          title: result.title || '',
-          tags: (result.tags || []).slice(0, 5),
-        });
-      },
-      fail: () => {
-        wx.showToast({ title: '网络请求失败', icon: 'none' });
-        this.setData({ step: 'input' });
-      },
+
+    // 云开发已停用，AI 整理降级为本地提取（取首行作标题，无标签）
+    // 如需恢复 AI，在 app.js 恢复 wx.cloud.init 并将此处替换为 wx.cloud.callFunction 调用
+    const trimmed = rawInput.trim();
+    wx.showToast({ title: 'AI 整理已关闭，已自动提取', icon: 'none' });
+    this.setData({
+      step: 'preview',
+      title: trimmed.split('\n')[0].slice(0, 30),
+      tags: [],
     });
   },
 
